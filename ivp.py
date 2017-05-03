@@ -178,13 +178,87 @@ def getsmip():
 
 
 
+#single get info smip info function
+'''
+getsmipge('192.168,201',3)
+'''
+def getsmipge(ip,ge):
+    try:
+        smipinfo0=requests.get('http://'+str(ip)+'/boardcontroller.cgi?action=get&object=slot6&key=channel_status&instanceID='+str(ge) ).json()
+        smipinfo1=requests.get('http://'+str(ip)+'/boardcontroller.cgi?action=get&object=slot6&key=ip_profile&instanceID='+str(ge)).json()
+    except:
+        smipinfo0=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot6&key=channel_status&instanceID='+str(ge) ).json()
+        smipinfo1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot6&key=ip_profile&instanceID='+str(ge)).json()
+    print(smipinfo0)
+    key0=smipinfo0['Body']['channel_status']
+    
+    print(key0)
+    try:
+        print('============================================>'+str(key0))
+        st0=ast.literal_eval(key0)
+        print('i will print---st0 in try-------------------------> '+str(st0))
+        st1=ast.literal_eval(st0['i'])
+        print('i am in st1 try ------------------------------------------------------------------->'+str(st1))
+        st2=st1['orr']
+        st3=st0
+        st0=st1
+        print('i have ===================arrive try end==============')          
+
+   
+    except:
+        print("i am in except===========================================>")
+        st0=(ast.literal_eval(key0))
+        st1=ast.literal_eval(st0['o'])
+        print(st1)
+        st2=st1['orr']
+        st3=st0
+        st0=st1
+   
+    print(st0)
+    
+    #you need to set the bufftime mechinism
+    stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],'disconnect':st0['off_t'],'ge':st3['ge'],'mode':st0['status']}} 
+    key1=smipinfo1['Body']
+    '''
+    {u'ip_profile': u'{"ad":"10.10.10.12","mac":"88:C2:55:8C:A0:90","mask":"255.255.255.0","ge":0,"dns":"10.10.10.1","ipmode":1,"io":0,"de":"","an":1,"spddup":3,"s":1,"bf":0}'
+    '''
+    #net0=ast.literal_eval(key1)
+    net0=key1
+    net1=ast.literal_eval(net0['ip_profile'])
+    geinfo={'Network setting':{'work mode':net1['ipmode'],'mask':net1['mask'],'gateway':net1['ge'],'ip':net1['ad']},'phy configuration':{'an':net1["an"],'phy speed':net1['spddup'],'status':net1['s']}}
+    infogroup={'smip-stream'+str(ge):stream,'smipgessetting'+str(ge):geinfo}    
+    return infogroup
 
 
 
 
 
+#lookup smip info in function 
+@app.route('/smipfunction')
+def getsmip():
+    ivpid = request.args.get('ivpid')
+    ip=paserip(str(ivpid))
+    try:
+        info1=getsmipge(ip,0)
+    except:
+        info1='the info of ge1 does not exist '
+    try:
+        info2=getsmipge(ip,1)
+    except
+        info2='the info if ge2 does not exsit'
 
+    try:    
+        info3=getsmipge(ip,2)
+    except:
+        info3='the info of ge3 does not exsit'
 
+    try:    
+        info4=getsmipge(ip,3)
+    except:
+        info4='the info of ge4  does not exsit'
+
+    allinfo={'info1':info1,'info2':info2,'info3':info3,'info4':info4}
+    return json.dumps(infogroup)
 
 
 
