@@ -235,7 +235,7 @@ def getsmipge(ip,ge):
 
 #lookup smip info in function 
 @app.route('/smipfunction')
-def getsmip():
+def getsmip1():
     ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     try:
@@ -244,7 +244,7 @@ def getsmip():
         info1='the info of ge1 does not exist '
     try:
         info2=getsmipge(ip,1)
-    except
+    except:
         info2='the info if ge2 does not exsit'
 
     try:    
@@ -258,7 +258,7 @@ def getsmip():
         info4='the info of ge4  does not exsit'
 
     allinfo={'info1':info1,'info2':info2,'info3':info3,'info4':info4}
-    return json.dumps(infogroup)
+    return json.dumps(allinfo)
 
 
 
