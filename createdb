@@ -1,0 +1,3 @@
+1.create database ivp;
+2.CREATE TABLE infoofivp (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+   ivpid VARCHAR(40), ip VARCHAR(20), user VARCHAR(30), phone VARCHAR(20), addressofdevice VARCHAR(30));
