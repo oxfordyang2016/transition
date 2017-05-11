@@ -107,7 +107,33 @@ def registered():
 
 
 #look encoder info
+#analysis which boads is  ready in ivp device according to ip
 
+def readyboards(ip):
+    '''
+    request example
+    requests.get('http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=boardmap&id=0.8234045444577069')
+    '''
+    url='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=boardmap'
+    elegantresponse=ast.literal_eval(requests.get(url).text)
+    #according to encoder/decoder list to decide which type is every board
+    return elegantresponse
+
+
+#Being ready group ofsingle device 
+
+@app.route('/ivp/readygroup')
+    ivpid = request.args.get('ivpid')
+    ip=paserip(str(ivpid))
+    return readyboards(str(ip) 
+
+
+
+
+#look encoder info
+
+
+#lookup decoder info
 
 
 
