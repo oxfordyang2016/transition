@@ -117,17 +117,22 @@ def readyboards(ip):
     url='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=boardmap'
     elegantresponse=ast.literal_eval(requests.get(url).text)
     #according to encoder/decoder list to decide which type is every board
-    return elegantresponse
+    print elegantresponse
+    return json.dumps(elegantresponse)
 
 
 #Being ready group ofsingle device 
 
 @app.route('/ivp/readygroup')
+def singledevicereadygroup():
+    
     ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
-    return readyboards(str(ip) 
-
-
+    #print readyboards(str(ip)
+    k=readyboards(str(ip))
+    print k
+    return k
+    
 
 
 #look encoder info
