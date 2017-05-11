@@ -13,7 +13,7 @@ import ast
 
 apiversion='1.0'
 
-db=MySQLdb.connect(host='192.168.201.142', user='root', passwd='123456',db="ivp")
+db=MySQLdb.connect(host='192.168.0.112', user='root', passwd='123456',db="ivp")
 cursor=db.cursor()
 
 
