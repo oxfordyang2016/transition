@@ -6,7 +6,10 @@ from time import strftime
 import MySQLdb
 import ast
 
-
+#board group
+encodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
+decodergroup=['6','13','14','20','21','30']
+tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
 
 
 
@@ -118,10 +121,16 @@ def readyboards(ip):
     elegantresponse=ast.literal_eval(requests.get(url).text)
     #according to encoder/decoder list to decide which type is every board
     print elegantresponse
-    return elegantresponse
+    all=elegantresponse['Body']
+    boardsgroup=[i for i in all.keys() if 'status' not in i]
+    encoder=[d for d in boardsgroup if all[str(d)] in encodergroup]
+    decoder=[d for d in boardsgroup if all[str(d)] in decodergroup]
+    return [elegantresponse,encoder,decoder]
 
 
 #Being ready group ofsingle device 
+
+
 
 @app.route('/ivp/readygroup')
 def singledevicereadygroup():
@@ -129,16 +138,105 @@ def singledevicereadygroup():
     ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
-    k=readyboards(str(ip))
-    print k
-    return json.dumps(k)
+    info=readyboards(str(ip))
+    k=info[0] 
+    all=k['Body']
+    boardsgroup=[i for i in all.keys() if 'status' not in i]   
+    encoder=[d for d in boardsgroup if all[str(d)] in encodergroup]
+    decoder=[d for d in boardsgroup if all[str(d)] in decodergroup]
+    print encoder,decoder
+    finalgroup={'encoder':encoder,'decoder':decoder} 
+    return json.dumps(finalgroup)
     
 
 
-#look encoder info
+#look all encoder info in single device
+@app.route('/ivps/encoders')
+def singledeviceencoderinfo():
+    ivpid = request.args.get('ivpid')
+    ip=paserip(str(ivpid))
+    #print readyboards(str(ip)
+    info=readyboards(str(ip))
+    encoder=info[1]
+    encoderall={}
+    for i in encoder:
+        print i
+        encoder={}
+        #http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=slot3&key=status
+        #print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status'
+        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
+        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=all').text
+        encoder['info1']=info1
+        encoder['info2']=info2
+        encoderall['i']=encoder
+    #print info1,info2
+    #print encoderall
+    return json.dumps(encoderall)    
+    '''
+    info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
+    #encoderall['info1']=info1
+    return info1
+    '''
 
 
-#lookup decoder info
+
+
+
+
+
+
+#lookup decoder info in single device   
+
+@app.route('/ivps/decoders')
+def singledevicedecoderinfo(*args):
+    ivpid = request.args.get('ivpid')
+    ip=paserip(str(ivpid))
+    #print readyboards(str(ip)
+    info=readyboards(str(ip))
+    decoder=info[2]
+    decoderall={}
+    for i in decoder:
+        print i
+        decoder={}
+        #http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=slot3&key=status
+        print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status'
+        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
+        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=all').text
+        decoder['info1']=info1
+        decoder['info2']=info2
+        decoderall[str(i)]=decoder
+    print info1,info2
+    print decoderall
+    return json.dumps(decoderall)
+    '''
+    info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
+    #encoderall['info1']=info1
+    return info1
+    '''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
