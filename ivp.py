@@ -118,7 +118,7 @@ def readyboards(ip):
     elegantresponse=ast.literal_eval(requests.get(url).text)
     #according to encoder/decoder list to decide which type is every board
     print elegantresponse
-    return json.dumps(elegantresponse)
+    return elegantresponse
 
 
 #Being ready group ofsingle device 
@@ -131,7 +131,7 @@ def singledevicereadygroup():
     #print readyboards(str(ip)
     k=readyboards(str(ip))
     print k
-    return k
+    return json.dumps(k)
     
 
 
