@@ -166,22 +166,11 @@ def singledeviceencoderinfo():
         #print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status'
         info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
         info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=all').text
-        selectedinfo1=ast.literal_eval(info1)
-       
-
         encoder['info1']=info1
         encoder['info2']=info2
-        encoderall[str(i)]=encoder
+        encoderall['i']=encoder
     #print info1,info2
-    
-
-    print"""
-
-                             return info
-
-           """
-    print type(encoderall)
-    print encoderall
+    #print encoderall
     return json.dumps(encoderall)    
     '''
     info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
@@ -216,10 +205,8 @@ def singledevicedecoderinfo(*args):
         decoder['info1']=info1
         decoder['info2']=info2
         decoderall[str(i)]=decoder
-    
-
     print info1,info2
-    print type(decoderall)
+    print decoderall
     return json.dumps(decoderall)
     '''
     info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
