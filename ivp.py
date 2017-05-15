@@ -239,7 +239,7 @@ def singledeviceencoderinfo():
     print type(encoderall)
     print encoderall
     return json.dumps(encoderall)    
-    retun json.dumps(bigbang)
+    return json.dumps(bigbang)
     '''
     info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
     #encoderall['info1']=info1
@@ -284,7 +284,7 @@ def singledevicedecoderinfo(*args):
         decoding_status=requirement1['status_str']
         videoinfo={'format':requirement2['format'],'chroma':requirement2['chroma'],'biterate':requirement2['biterate']}
         audioinfo={'audio1':requirement3[0],'audio2':requirement3[1],'audio3':requirement3[2],'audio4':requirement3[3]}
-        avinfo={'decoding status':decoding_status,'','video info'videoinfo,'audioallinfo':audioinfo}
+        avinfo={'decoding status':decoding_status,'video info':videoinfo,'audioallinfo':audioinfo}
 
 
 
