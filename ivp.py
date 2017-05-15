@@ -100,12 +100,26 @@ def paserip(ivpid):
 
 #lookup registered ivp device
 @app.route('/ivps/registered')
-def registered():
-    ivpid = request.args.get('ivpid')
-    cursor.execute("select * from infoofivp where ivpid= "+"'"+str(ivpid)+"'")
-    registeredinfo=getrow()
+def registered(*args):
+    try:
+        ivpid = request.args.get('ivpid')
+        cursor.execute("select * from infoofivp where ivpid= "+"'"+str(ivpid)+"'")
+        registeredinfo=getrow()
+    except:
+        cursor.execute("select ivpid from infoofivp")
+        registeredinfo=getrow()
+    
     print('hallo')
     return json.dumps(registeredinfo)
+
+
+#lookup all registered ivps
+#i need to rethink that does it work with ivp device code?
+
+
+
+
+
 
 
 
