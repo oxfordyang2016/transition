@@ -106,7 +106,7 @@ def registered(*args):
         cursor.execute("select * from infoofivp where ivpid= "+"'"+str(ivpid)+"'")
         registeredinfo=getrow()
     except:
-        cursor.execute("select ivpid from infoofivp")
+        cursor.execute("select ivpid,status from infoofivp")
         registeredinfo=getrow()
     
     print('hallo')
