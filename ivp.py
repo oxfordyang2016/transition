@@ -13,13 +13,39 @@ alldecodergroup=['6','13','14','20','21','30']
 tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
 neededencodergroup=['10']
 neededdecodergroup=['21']
-
-
-
 apiversion='1.0'
-
 db=MySQLdb.connect(host='192.168.0.112', user='root', passwd='123456',db="ivp")
 cursor=db.cursor()
+#design solution
+'''
+0.clent sends registed info requests including ip,user,phone ect and server save the table in db
+  and initiate the status all device  to be 'first registered'
+
+1.we be-realtime change the status of all devices.the status written by a function ,the function need
+to monitor all boards in the ivp and refresh the status every 10 seconds. 
+
+2.in server  end.we refresh  the table.wow the server has 2 tables .a table is used to maintain the
+  registered info ,another tables is used to log all device monitor info every 5 min
+
+3.client sends request to server ,server tell clients all registered devices
+   and the status of device then.(work/not work/)server give status ,the client send 
+   requests to get detail info of the device(the requirements supplied by mr yao)
+
+4.the standard ,my idea is the fewllowing:
+  fecth the reuirements of every board.if can fecth ,i will give ok.and refresh the deivce registred
+  table.clients send requests and we will fetch the device registered table.    
+
+
+
+'''
+
+
+
+
+
+
+
+
 
 
 #define a function to get table row info and write it to dict
@@ -52,6 +78,16 @@ def hello_world():
 def version():
     versionofapi={'version':apiversion}
     return json.dumps(versionofapi)
+
+
+
+
+
+
+
+
+
+
 
 
 
