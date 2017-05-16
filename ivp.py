@@ -35,7 +35,9 @@ to monitor all boards in the ivp and refresh the status every 10 seconds.
   fecth the reuirements of every board.if can fecth ,i will give ok.and refresh the deivce registred
   table.clients send requests and we will fetch the device registered table.    
 
-
+5.i will give the registered ivp hardware info.use serial number
+6.i can give the link info (enccoder------smip-----smip-----decoder)
+7.seach the info in ivp registred table to detect a  link.
 
 '''
 
@@ -541,6 +543,9 @@ def getsmip1():
     return json.dumps(allinfo)
 
 
+#get link info
+@app.
+def linkinfo()
 
 
 
