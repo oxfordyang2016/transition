@@ -8,10 +8,11 @@ import MySQLdb
 import ast
 
 #board group
-encodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
-decodergroup=['6','13','14','20','21','30']
+allencodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
+alldecodergroup=['6','13','14','20','21','30']
 tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
-
+neededencodergroup=['10']
+neededdecodergroup=['21']
 
 
 
@@ -132,7 +133,7 @@ def registered(*args):
 #look encoder info
 #analysis which boads is  ready in ivp device according to ip
 
-def readyboards(ip):
+def readyboards(ip,encodergroup,decodergroup):
     '''
     request example
     requests.get('http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=boardmap&id=0.8234045444577069')
@@ -158,12 +159,12 @@ def singledevicereadygroup():
     ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
-    info=readyboards(str(ip))
+    info=readyboards(str(ip),allencodergroup,alldecodergroup)
     k=info[0] 
     all=k['Body']
     boardsgroup=[i for i in all.keys() if 'status' not in i]   
-    encoder=[d for d in boardsgroup if all[str(d)] in encodergroup]
-    decoder=[d for d in boardsgroup if all[str(d)] in decodergroup]
+    encoder=[d for d in boardsgroup if all[str(d)] in allencodergroup]
+    decoder=[d for d in boardsgroup if all[str(d)] in alldecodergroup]
     print encoder,decoder
     finalgroup={'encoder':encoder,'decoder':decoder} 
     return json.dumps(finalgroup)
@@ -205,13 +206,13 @@ def singledevicereadygroup():
  \n\t\t"systemParam":\t"649DD0,1,40,410,420,421,422,423,400,410,64,23,64,3E8,0,1",
  \n\t\t"profile_crc":\t"4241230914"\n\t}\n}'}}
 '''
-#look all encoder info in single device
+#look all encoder info in single device//--------these requirements are implemented by mrs yao
 @app.route('/ivps/encoders')
 def singledeviceencoderinfo():
     ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
-    info=readyboards(str(ip))
+    info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
     encoder=info[1]
     encoderall={}
     for i in encoder:
@@ -281,7 +282,7 @@ def singledevicedecoderinfo(*args):
     ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
-    info=readyboards(str(ip))
+    info=readyboards(str(ip),neededencodergroup,neededencodergroup)
     decoder=info[2]
     decoderall={}
     for i in decoder:
