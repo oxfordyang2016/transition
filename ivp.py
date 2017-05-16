@@ -1,3 +1,4 @@
+from colors import red, green, blue,yellow
 from flask import Flask,request
 app = Flask(__name__)
 import requests
@@ -101,13 +102,18 @@ def paserip(ivpid):
 #lookup registered ivp device
 @app.route('/ivps/registered')
 def registered(*args):
-    try:
-        ivpid = request.args.get('ivpid')
+    ivpid = request.args.get('ivpid')
+    print str(ivpid)+'ivp id is here'
+    if ivpid!=None:
         cursor.execute("select * from infoofivp where ivpid= "+"'"+str(ivpid)+"'")
+        print 'the line is  a bug---------------'
         registeredinfo=getrow()
-    except:
-        cursor.execute("select ivpid,status from infoofivp")
+    else:
+        print 'i have enter except part--------------->'
+        cursor.execute("select ivpid,devicestatus from infoofivp")
+        print "select ivpid,devicestatus from infoofivp"
         registeredinfo=getrow()
+        print registeredinfo
     
     print('hallo')
     return json.dumps(registeredinfo)
@@ -213,10 +219,11 @@ def singledeviceencoderinfo():
         encoder={}
         #http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=slot3&key=status
         #print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status'
-        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
-        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=all').text
+        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status').text
+        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=all').text
         selectedinfo1=ast.literal_eval(info1)
         selectedinfo2=ast.literal_eval(info2)
+        print red(selectedinfo1)
         requirement1=selectedinfo1['Body']
         requirement2=selectedinfo1['Body']
 
@@ -284,14 +291,17 @@ def singledevicedecoderinfo(*args):
         print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status'
         info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status').text
 
-        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=avinfo&value=0').tex
+        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=avinfo&value=0').text
+        info3=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=avinfo&value=1').text
         decoder['info1']=info1
         decoder['info2']=info2
         decoder['info3']=info3
         #decoderall[str(i)]=decoder
+        print yellow('info1------>'+str(info1))
         selectedinfo1=ast.literal_eval(info1)
         selectedinfo2=ast.literal_eval(info2)
         selectedinfo3=ast.literal_eval(info3)
+        print red(str(selectedinfo1)) 
         requirement1=selectedinfo1['Body']
         requirement2=selectedinfo2['Body']
         requirement3=selectedinfo3['Body']['audinfo']
