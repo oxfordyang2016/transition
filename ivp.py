@@ -184,13 +184,14 @@ def readyboards(ip,encodergroup,decodergroup):
     boardsgroup=[i for i in all.keys() if 'status' not in i]
     encoder=[d for d in boardsgroup if all[str(d)] in encodergroup]
     decoder=[d for d in boardsgroup if all[str(d)] in decodergroup]
+    print encoder,str(decoder)
     return [elegantresponse,encoder,decoder]
 
 
 #Being ready group ofsingle device 
 
 
-
+#get single device
 @app.route('/ivp/readygroup')
 def singledevicereadygroup():
     
@@ -204,7 +205,8 @@ def singledevicereadygroup():
     encoder=[d for d in boardsgroup if all[str(d)] in allencodergroup]
     decoder=[d for d in boardsgroup if all[str(d)] in alldecodergroup]
     print encoder,decoder
-    finalgroup={'encoder':encoder,'decoder':decoder} 
+    finalgroup={'encoder':encoder,'decoder':decoder}
+    print yellow(str(finalgroup)) 
     return json.dumps(finalgroup)
     
 '''
@@ -258,25 +260,27 @@ def singledeviceencoderinfo():
         encoder={}
         #http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=slot3&key=status
         #print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status'
-        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status').text
-        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=all').text
+        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
+        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=all').text
         selectedinfo1=ast.literal_eval(info1)
         selectedinfo2=ast.literal_eval(info2)
-        print red(selectedinfo1)
+        print red(str(selectedinfo1))
         requirement1=selectedinfo1['Body']
-        requirement2=selectedinfo1['Body']
+        requirement2=selectedinfo2['Body']
 
         encoder_status={'encoding_status':requirement1['status_str'],'video input':requirement1['videoinfo_str'],'audio1to4input':{'audio1input':requirement1['audioinfo_str0'],'audio2input':requirement1['audioinfo_str1'],'audio3input':requirement1['audioinfo_str2'],'audio4input':requirement1['audioinfo_str3'], }}
+        print(yellow(str(requirement2)))
         bitratesettingmode=requirement2['bitMode']
 
         programparameters={'service':requirement2['videoSerName'],'provider':[requirement2['videoPrivoder']],'biterate': [x.strip() for x in requirement2['systemParam'].split(',')][0]}
         vp=[x.strip() for x in requirement2['videoParam'].split(',')]
         videoparameters={'source':vp[0],'format':vp[1],'horizontal size':vp[2],'biterate':vp[3],'loss input':vp[-1]}
-        ap1=[x.strip for  x  in requirement2['audioParam0']]
-        ap2=[x.strip for  x  in requirement2['audioParam1']]
-        ap3=[x.strip for  x  in requirement2['audioParam2']]
-        ap4=[x.strip for  x  in requirement2['audioParam3']]
-        ap=[ap1,ap2,ap3.ap4]
+        ap1=[x.strip() for  x  in requirement2['audioParam0']]
+        ap2=[x.strip() for  x  in requirement2['audioParam1']]
+        ap3=[x.strip() for  x  in requirement2['audioParam2']]
+        ap4=[x.strip() for  x  in requirement2['audioParam3']]
+        ap=[ap1,ap2,ap3,ap4]
+        
         audioparameters={}
         i=0
         for k in ap:
@@ -296,9 +300,11 @@ def singledeviceencoderinfo():
                              return info
 
            """
-    print type(encoderall)
-    print encoderall
-    return json.dumps(encoderall)    
+    #print type(encoderall)
+    #print encoderall
+    print red('i will print big bang')
+    print bigbang
+    #return json.dumps(encoderall)    
     return json.dumps(bigbang)
     '''
     info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
@@ -320,18 +326,22 @@ def singledevicedecoderinfo(*args):
     ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
-    info=readyboards(str(ip),neededencodergroup,neededencodergroup)
+    info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
     decoder=info[2]
+    print  yellow('info is it===========================> '+str(info))
+    print blue(str(decoder))
     decoderall={}
     for i in decoder:
         print i
         decoder={}
         #http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=slot3&key=status
         print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status'
-        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status').text
+        ins1='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status'
+        print blue(ins1)
+        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
 
-        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=avinfo&value=0').text
-        info3=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=avinfo&value=1').text
+        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=avinfo&value=0').text
+        info3=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=avinfo&value=1').text
         decoder['info1']=info1
         decoder['info2']=info2
         decoder['info3']=info3
@@ -345,7 +355,7 @@ def singledevicedecoderinfo(*args):
         requirement2=selectedinfo2['Body']
         requirement3=selectedinfo3['Body']['audinfo']
         decoding_status=requirement1['status_str']
-        videoinfo={'format':requirement2['format'],'chroma':requirement2['chroma'],'biterate':requirement2['biterate']}
+        videoinfo={'format':requirement2['format'],'chroma':requirement2['chroma'],'biterate':requirement2['bitrate']}
         audioinfo={'audio1':requirement3[0],'audio2':requirement3[1],'audio3':requirement3[2],'audio4':requirement3[3]}
         avinfo={'decoding status':decoding_status,'video info':videoinfo,'audioallinfo':audioinfo}
 
@@ -544,8 +554,9 @@ def getsmip1():
 
 
 #get link info
-@app.
-def linkinfo()
+@app.route('/')
+def linkinfo():
+    pass
 
 
 
