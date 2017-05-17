@@ -168,6 +168,9 @@ def registered(*args):
 
 
 
+
+
+
 #look encoder info
 #analysis which boads is  ready in ivp device according to ip
 
@@ -188,10 +191,21 @@ def readyboards(ip,encodergroup,decodergroup):
     return [elegantresponse,encoder,decoder]
 
 
+#write all ivps borads to database;
+def allivpsboards():
+    cursor.execute('select ivpid from infoofivp')
+    allivp=getrow()
+    print(allivp)
+
+
+
+
+
+
+
 #Being ready group ofsingle device 
 
-
-#get single device
+#get single device work status
 @app.route('/ivps/readygroup')
 def singledevicereadygroup():
     
@@ -209,6 +223,20 @@ def singledevicereadygroup():
     print yellow(str(finalgroup)) 
     return json.dumps(finalgroup)
     
+
+
+
+
+    
+ 
+
+
+
+
+
+
+
+
 '''
 {'slot3': {'info1': u'{\n\t"Head":\t{\n\t\t"ErrorCode":\t"0",
 \n\t\t"Message":\t"Success"\n\t},
