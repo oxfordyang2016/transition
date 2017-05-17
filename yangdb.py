@@ -31,6 +31,8 @@ def getrow():
 
 #return the qury result of fianl.
 def ultimatesql(host,user,passwd,db,sql):
+	db=MySQLdb.connect(host, user, passwd,db)
+	cursor=db.cursor()
 	connectmysql(host,user,passwd,db)
 	execute(sql)
 	result=getrow()
