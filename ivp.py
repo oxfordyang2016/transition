@@ -192,7 +192,7 @@ def readyboards(ip,encodergroup,decodergroup):
 
 
 #get single device
-@app.route('/ivp/readygroup')
+@app.route('/ivps/readygroup')
 def singledevicereadygroup():
     
     ivpid = request.args.get('ivpid')
