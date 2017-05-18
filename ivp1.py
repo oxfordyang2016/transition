@@ -217,7 +217,7 @@ def allivpsboards():
 
 
 
-allivpsboards()
+#allivpsboards()
 
 
 #give positions info  to front
@@ -652,5 +652,5 @@ def linkinfo():
 
 
 if __name__ == '__main__':
-   app.run('0.0.0.0',50,debug='True')
+   app.run('0.0.0.0',60,debug='True')
 
