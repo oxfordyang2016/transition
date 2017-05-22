@@ -54,8 +54,7 @@ def ultimatesql1(host,user,passwd,db,sql):
 
 
 #debug test
-def ultimatesql(host,user,passwd,db,sql):
-    
+def ultimatesql(host,user,passwd,db,sql):    
     #db=MySQLdb.connect(host, user, passwd,db)
     #cursor=db.cursor()
     db,cursor=connectmysql(host,user,passwd,db)
@@ -63,11 +62,5 @@ def ultimatesql(host,user,passwd,db,sql):
     result=getrow(db,cursor)
     print red(str(result))
     return result
-
-
-
-
-
-
 
 

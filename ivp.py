@@ -80,13 +80,32 @@ def version():
     versionofapi={'version':apiversion}
     return json.dumps(versionofapi)
 
+@app.route('/api/errorcodes')
+def errorcodes():
+    errorcodelist=[{'0':'success'},{'11':'fail to query device status'},{'211':'errorcode api  internal error'}]
+    try:
+        return json.dumps({'errorcodelist':errorcodelist,'errorcode':0})
+    except:
+        return json.dumps({'errorcodelist':errorcodelist,'errorcode':211})
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 #register ivp
 #r=requests.post('http://192.168.201.142:50/ivps',json={'ip':'192.168.50.182','user':'yangming','addressofdevice':'shanghai','phone':'110'})
-@app.route('/ivps',methods = ['POST', 'GET'])
+@app.route('/ivps',methods = ['POST'])
 def register():
     if request.method == 'POST':
         #user = request.form['user']
@@ -104,11 +123,11 @@ def register():
 
 
         return json.dumps(ivpinfo)
-    else:
-        user = request.args.get('nm')
-        return redirect(url_for('success',name = user))
-
-
+    #else:
+        #user = request.args.get('nm')
+        #return redirect(url_for('success',name = user))
+        #return json.dumps({'errorcode':89})
+        #workstatus()
 
 #parser the ip of ivp device according to ivpid
 def paserip(ivpid):
@@ -150,7 +169,21 @@ def registered(*args):
 #i need to rethink that does it work with ivp device code?
 
 
-
+@app.route('/ivps',methods=['GET'])
+def workstatus(*args):
+    print('i am look for all status')
+    cursor.execute("select ivpid,devicestatus from infoofivp ")
+    status=getrow()
+    thenumberofivpid=len(status)
+    statuslist=[]
+    for k in range(thenumberofivpid):
+        statuslist.append({str(status[str(k)]['ivpid']):status[str(k)]['devicestatus']})
+    try:
+        result={'statuslist':statuslist,'errorcode':0}
+    except:
+        #tmp error code =11
+        result={'statuslist':'','errorcode':11}    
+    return json.dumps(result)
 
 
 
@@ -174,9 +207,6 @@ def readyboards(ip,encodergroup,decodergroup):
     decoder=[d for d in boardsgroup if all[str(d)] in decodergroup]
     print encoder,str(decoder)
     return [elegantresponse,encoder,decoder]
-
-
-
 
 
 
@@ -217,7 +247,7 @@ def allivpsboards():
 
 
 
-allivpsboards()
+#allivpsboards()
 
 
 #give positions info  to front
@@ -269,7 +299,14 @@ def getallpostions(*args):
 #Being ready group ofsingle device 
 
 
-#get single device
+
+
+
+
+
+#Being ready group ofsingle device 
+
+#get single device work status
 @app.route('/ivps/readygroup')
 def singledevicereadygroup():
     
@@ -287,6 +324,20 @@ def singledevicereadygroup():
     print yellow(str(finalgroup)) 
     return json.dumps(finalgroup)
     
+
+
+
+
+    
+ 
+
+
+
+
+
+
+
+
 '''
 {'slot3': {'info1': u'{\n\t"Head":\t{\n\t\t"ErrorCode":\t"0",
 \n\t\t"Message":\t"Success"\n\t},
