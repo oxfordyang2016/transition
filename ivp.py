@@ -512,9 +512,15 @@ def singledevicedecoderinfo(*args):
 
 
 
-
-
-
+@app.route('/ivps/allpos1'):
+def allpos(*args):
+    cursor.execute('select allposandtype.ivpid,u1status,d1status ,u2status,d2status,u3status,d3status,u1type,d1type,u2type,d2type,u3type,d3type from allposandstatus,allposandtype where allposandstatus.ivpid=allposandtype.ivpid')
+    allpos=getrow()
+    thenumberofivpid=len(allpos)
+    allposlist=[]
+    for k in range(thenumberofivpid):
+        allposlist.append({'ivpid':allpos[str(k)]['ivpdid']})
+    return 'ok'
 
 
 
