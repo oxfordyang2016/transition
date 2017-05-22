@@ -84,18 +84,6 @@ def version():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 #register ivp
 #r=requests.post('http://192.168.201.142:50/ivps',json={'ip':'192.168.50.182','user':'yangming','addressofdevice':'shanghai','phone':'110'})
 @app.route('/ivps',methods = ['POST', 'GET'])
@@ -162,10 +150,21 @@ def registered(*args):
 #i need to rethink that does it work with ivp device code?
 
 
-
-
-
-
+@app.route('/ivps')
+def workstatus(*args):
+    print('i am look for all status')
+    cursor.execute("select ivpid,devicestatus from infoofivp ")
+    status=getrow()
+    thenumberofivpid=len(status)
+    statuslist=[]
+    for k in range(thenumberofivpid):
+        statuslist[k]={str(status[str(k)]['ivpid']):status[str(k)]['devicestatus']}
+    try:
+        result={'statuslist':statuslist,'errorcode':0}
+    except:
+        #tmp error code =11
+        result={'statuslist':'','errorcoer':11}    
+    return json.dumps(result)
 
 
 
