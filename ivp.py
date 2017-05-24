@@ -6,6 +6,13 @@ import json
 from time import strftime 
 import MySQLdb
 import ast
+import redis
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+
+
+
+
 
 #board group
 allencodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
@@ -171,7 +178,10 @@ def registered(*args):
 
 @app.route('/ivps',methods=['GET'])
 def workstatus(*args):
-    print('i am look for all status')
+    ivpid = request.args.get('ivpid')
+    if ivpid!=None:
+        print('i am look for all status')
+        return json.dumps(ast.literal_eval(r.get('ivp201705170754')))
     cursor.execute("select ivpid,devicestatus from infoofivp ")
     status=getrow()
     thenumberofivpid=len(status)
@@ -184,6 +194,12 @@ def workstatus(*args):
         #tmp error code =11
         result={'statuslist':'','errorcode':11}    
     return json.dumps(result)
+
+
+
+
+
+
 
 
 
@@ -252,7 +268,7 @@ def allivpsboards():
 
 #give positions info  to front
 
-@app.route('/ivps/allpos')
+@app.route('/ivps/allpos1')
 def getallpostions(*args):
     cursor.execute("select ip,ivpid,encodergroup,decodergroup from deviceworkingboard")
     allrow=getrow()
@@ -512,15 +528,21 @@ def singledevicedecoderinfo(*args):
 
 
 
-@app.route('/ivps/allpos1'):
+@app.route('/ivps/allpos')
 def allpos(*args):
-    cursor.execute('select allposandtype.ivpid,u1status,d1status ,u2status,d2status,u3status,d3status,u1type,d1type,u2type,d2type,u3type,d3type from allposandstatus,allposandtype where allposandstatus.ivpid=allposandtype.ivpid')
+    cursor.execute('select allposandtype.ivpid,allposandstatus.ip,u1status,d1status ,u2status,d2status,u3status,d3status,u1type,d1type,u2type,d2type,u3type,d3type from allposandstatus,allposandtype where allposandstatus.ivpid=allposandtype.ivpid')
     allpos=getrow()
+    print allpos
     thenumberofivpid=len(allpos)
     allposlist=[]
     for k in range(thenumberofivpid):
-        allposlist.append({'ivpid':allpos[str(k)]['ivpdid']})
-    return 'ok'
+        allposlist.append({"id":allpos[str(k)]['ivpid'],"ip":allpos[str(k)]['ip'],"slot_list":[
+{"slot0":{'name':allpos[str(k)]['d1type'],'status':allpos[str(k)]['d1status']}},{"slot1":{'name':allpos[str(k)]['d2type'],'status':allpos[str(k)]['d2status']}},{"slot2":{'name':allpos[str(k)]['d3type'],'status':allpos[str(k)]['d3status']}},{"slot3":{'name':allpos[str(k)]['u1type'],'status':allpos[str(k)]['u1status']}},{"slot4":{'name':allpos[str(k)]['u2type'],'status':allpos[str(k)]['u2status']}},{"slot5":{'name':allpos[str(k)]['u3type'],'status':allpos[str(k)]['u3status']}}]})    
+
+
+
+    result={'ivp_list':allposlist,'errorcode':0}
+    return json.dumps(result)
 
 
 
