@@ -204,7 +204,7 @@ def singledeviceencoderinfo(ivpid='test'):
 
 @app.route('/ivps/decoders')
 def singledevicedecoderinfo(ivpid='test'):
-    if ivpid=='test'
+    if ivpid=='test':
         ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
@@ -318,7 +318,7 @@ def getsmipge(ip,ge):
 #lookup smip info in function 
 @app.route('/smipfunction')
 def getsmip1(ivpid='test'):
-    if ivpid=='test'
+    if ivpid=='test':
         ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     try:
