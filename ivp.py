@@ -342,187 +342,27 @@ def singledevicereadygroup():
     
 
 
+#lookup decoder info in single device   
 
-
-    
- 
-
-
-
-
-
-
-
-
-'''
-{'slot3': {'info1': u'{\n\t"Head":\t{\n\t\t"ErrorCode":\t"0",
-\n\t\t"Message":\t"Success"\n\t},
-\n\t"Body":\t{\n\t\t"status":\t"2",
-\n\t\t"status_str":\t"Encoding",
-\n\t\t"videoinfo":\t"255",\n\t\t"audioinfo":\t"0",
-\n\t\t"videoinfo_str":\t"SDI-Unlocked",
-\n\t\t"audioinfo_str0":\t"SDI-Lost",
-\n\t\t"audioinfo_str1":\t"SDI-Lost",
-\n\t\t"audioinfo_str2":\t"SDI-Lost",
-\n\t\t"audioinfo_str3":\t"SDI-Lost"\n\t}\n}',
-
-
-
-
-
-
- 'info2': u'{\n\t"Head":\t{\n\t\t"ErrorCode":\t"0",
- \n\t\t"Message":\t"Success"\n\t},
- \n\t"Body":\t{\n\t\t"BoardType":\t"HDELProfile",
- \n\t\t"profile_version":\t"3",\n\t\t"main_input_num":
- \t"1",\n\t\t"main_output_num":\t"1",
- \n\t\t"sub_input_num":\t"0",\n\t\t"sub_output_num":\t"2",
- \n\t\t"HDE_In1":\t"0",\n\t\t"videoPrivoder":\t"UNKNOWN",
- \n\t\t"videoSerName":\t"UNKNOWN",\n\t\t"biss":\t"0,0,0",
- \n\t\t"bitMode":\t"0",\n\t\t"audioParam0":\t"0,1,1,7,1F4,A,1",
- \n\t\t"audioParam1":\t"1,0,1,7,1F4,A,1",
- \n\t\t"audioParam2":\t"2,0,1,7,1F4,A,1",
- \n\t\t"audioParam3":\t"3,0,1,7,1F4,A,1",
- \n\t\t"audioALC0":\t"0,14,0,0,7D0,0",
- \n\t\t"audioALC1":\t"0,14,0,0,7D0,0",
- \n\t\t"audioALC2":\t"0,14,0,0,7D0,0",
- \n\t\t"audioALC3":\t"0,14,0,0,7D0,0",
- \n\t\t"videoParam":\t"1,2,0,5B8D80,3,28,1,0,1,0,0,0,0,1,1,0,1,20,2,0",
- \n\t\t"systemParam":\t"649DD0,1,40,410,420,421,422,423,400,410,64,23,64,3E8,0,1",
- \n\t\t"profile_crc":\t"4241230914"\n\t}\n}'}}
-'''
-#look all encoder info in single device//--------these requirements are implemented by mrs yao
 @app.route('/ivps/encoders')
-def singledeviceencoderinfo():
-    ivpid = request.args.get('ivpid')
-    ip=paserip(str(ivpid))
-    #print readyboards(str(ip)
-    info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
-    encoder=info[1]
-    encoderall={}
-    for i in encoder:
-        print i
-        encoder={}
-        #http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=slot3&key=status
-        #print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status'
-        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
-        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=all').text
-        selectedinfo1=ast.literal_eval(info1)
-        selectedinfo2=ast.literal_eval(info2)
-        print red(str(selectedinfo1))
-        requirement1=selectedinfo1['Body']
-        requirement2=selectedinfo2['Body']
-
-        encoder_status={'encoding_status':requirement1['status_str'],'video input':requirement1['videoinfo_str'],'audio1to4input':{'audio1input':requirement1['audioinfo_str0'],'audio2input':requirement1['audioinfo_str1'],'audio3input':requirement1['audioinfo_str2'],'audio4input':requirement1['audioinfo_str3'], }}
-        print(yellow(str(requirement2)))
-        bitratesettingmode=requirement2['bitMode']
-
-        programparameters={'service':requirement2['videoSerName'],'provider':[requirement2['videoPrivoder']],'biterate': [x.strip() for x in requirement2['systemParam'].split(',')][0]}
-        vp=[x.strip() for x in requirement2['videoParam'].split(',')]
-        videoparameters={'source':vp[0],'format':vp[1],'horizontal size':vp[2],'biterate':vp[3],'loss input':vp[-1]}
-        ap1=[x.strip() for  x  in requirement2['audioParam0']]
-        ap2=[x.strip() for  x  in requirement2['audioParam1']]
-        ap3=[x.strip() for  x  in requirement2['audioParam2']]
-        ap4=[x.strip() for  x  in requirement2['audioParam3']]
-        ap=[ap1,ap2,ap3,ap4]
-        
-        audioparameters={}
-        i=0
-        for k in ap:
-            i=i+1
-            audioparameters['channel'+str(i)]={'source':k[0],'audio enable':k[1],'format':k[2],'loss of input':k[-2]}
-        #spree
-        bigbang={'encoder status':encoder_status,'encoder_setting':{'bitrate settingmode':bitratesettingmode,'videoParam':videoparameters,'programparameters':programparameters,'audioparameters':audioparameters}}
-
-        encoder['info1']=info1
-        encoder['info2']=info2
-        encoderall[str(i)]=encoder
-    #print info1,info2
-    
-
-    print"""
-
-                             return info
-
-           """
-    #print type(encoderall)
-    #print encoderall
-    print red('i will print big bang')
-    print bigbang
-    #return json.dumps(encoderall)    
-    return json.dumps(bigbang)
-    '''
-    info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
-    #encoderall['info1']=info1
-    return info1
-    '''
-
-
-
-
-
+def singledevicedecoderinfo(ivpid='test'):
+    if ivpid=='test':
+        ivpid = request.args.get('ivpid')
+    result=r.get(str(ivpid)+'encodergroup') 
+    finalresult=ast.literal_eval(result)     
+    return json.dumps(finalresult)
 
 
 
 #lookup decoder info in single device   
 
 @app.route('/ivps/decoders')
-def singledevicedecoderinfo(*args):
-    ivpid = request.args.get('ivpid')
-    ip=paserip(str(ivpid))
-    #print readyboards(str(ip)
-    info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
-    decoder=info[2]
-    print  yellow('info is it===========================> '+str(info))
-    print blue(str(decoder))
-    decoderall={}
-    for i in decoder:
-        print i
-        decoder={}
-        #http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=slot3&key=status
-        print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status'
-        ins1='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status'
-        print blue(ins1)
-        info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
-
-        info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=avinfo&value=0').text
-        info3=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=avinfo&value=1').text
-        decoder['info1']=info1
-        decoder['info2']=info2
-        decoder['info3']=info3
-        #decoderall[str(i)]=decoder
-        print yellow('info1------>'+str(info1))
-        selectedinfo1=ast.literal_eval(info1)
-        selectedinfo2=ast.literal_eval(info2)
-        selectedinfo3=ast.literal_eval(info3)
-        print red(str(selectedinfo1)) 
-        requirement1=selectedinfo1['Body']
-        requirement2=selectedinfo2['Body']
-        requirement3=selectedinfo3['Body']['audinfo']
-        decoding_status=requirement1['status_str']
-        videoinfo={'format':requirement2['format'],'chroma':requirement2['chroma'],'biterate':requirement2['bitrate']}
-        audioinfo={'audio1':requirement3[0],'audio2':requirement3[1],'audio3':requirement3[2],'audio4':requirement3[3]}
-        avinfo={'decoding status':decoding_status,'video info':videoinfo,'audioallinfo':audioinfo}
-
-
-
-
-
-
-
-    
-
-    print info1,info2
-    print type(decoderall)
-    #return json.dumps(decoderall)
-    return json.dumps(avinfo)
-    '''
-    info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
-    #encoderall['info1']=info1
-    return info1
-    '''
-
-
+def singledevicedecoderinfo(ivpid='test'):
+    if ivpid=='test':
+        ivpid = request.args.get('ivpid')
+    result=r.get(str(ivpid)+'decodergroup') 
+    finalresult=ast.literal_eval(result)     
+    return json.dumps(finalresult)
 
 
 
