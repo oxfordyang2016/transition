@@ -243,6 +243,7 @@ def singledevicedecoderinfo(ivpid='test'):
 
     print info1,info2
     print type(decoderall)
+    r.set(str(ivpid)+'decodergroup',decoderall)
     #return json.dumps(decoderall)
     return json.dumps(avinfo)
     '''
@@ -341,13 +342,15 @@ def getsmip1(ivpid='test'):
         info4='the info of ge4  does not exsit'
 
     allinfo={'info1':info1,'info2':info2,'info3':info3,'info4':info4}
+    r.set(str(ivpid)+'smipinfo',allinfo)
     return json.dumps(allinfo)
 
 
 
 for k in range(5):
     singledeviceencoderinfo(ivpid='ivp201705170754')
-
+    singledevicedecoderinfo(ivpid='ivp201705170754')
+    getsmip1(ivpid='ivp201705170754')
 
 
 
