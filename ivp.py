@@ -348,7 +348,7 @@ def singledevicereadygroup():
 def singledeviceencoderinfo(ivpid='test'):
     if ivpid=='test':
         ivpid = request.args.get('ivpid')
-    result=r.get(str(ivpid)+'encodergroup') 
+    result=r.get(str(ivpid)+'encodersstatus') 
     finalresult=ast.literal_eval(result)     
     return json.dumps(finalresult)
 
@@ -360,7 +360,7 @@ def singledeviceencoderinfo(ivpid='test'):
 def singledevicedecoderinfo(ivpid='test'):
     if ivpid=='test':
         ivpid = request.args.get('ivpid')
-    result=r.get(str(ivpid)+'decodergroup') 
+    result=r.get(str(ivpid)+'decoderstatus') 
     finalresult=ast.literal_eval(result)     
     return json.dumps(finalresult)
 

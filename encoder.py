@@ -138,6 +138,7 @@ def singledeviceencoderinfo(ivpid='test'):
     info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
     encoder=info[1]
     encoderall={}
+    alldecoder=[]
     for i in encoder:
         print i
         encoder={}
@@ -170,8 +171,8 @@ def singledeviceencoderinfo(ivpid='test'):
             i=i+1
             audioparameters['channel'+str(i)]={'source':k[0],'audio enable':k[1],'format':k[2],'loss of input':k[-2]}
         #spree
-        bigbang={'encoder status':encoder_status,'encoder_setting':{'bitrate settingmode':bitratesettingmode,'videoParam':videoparameters,'programparameters':programparameters,'audioparameters':audioparameters}}
-
+        bigbang={'position':i,'encoder status':encoder_status,'encoder_setting':{'bitrate settingmode':bitratesettingmode,'videoParam':videoparameters,'programparameters':programparameters,'audioparameters':audioparameters}}
+        allencoder.append(bigbang)
         encoder['info1']=info1
         encoder['info2']=info2
         encoderall[str(i)]=encoder
@@ -180,6 +181,7 @@ def singledeviceencoderinfo(ivpid='test'):
     print red('i will print big bang')
     print bigbang
     r.set(str(ivpid)+'encodergroup',str(bigbang))
+    r.set(str(ivpid)+'encodersstatus',str(bigbang))
     #return json.dumps(encoderall)    
     return json.dumps(bigbang)
     '''

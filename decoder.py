@@ -141,6 +141,7 @@ def singledevicedecoderinfo(ivpid='test'):
     print  yellow('info is it===========================> '+str(info))
     print blue(str(decoder))
     decoderall={}
+    alldecoder=[]
     for i in decoder:
         print i
         decoder={}
@@ -167,11 +168,12 @@ def singledevicedecoderinfo(ivpid='test'):
         decoding_status=requirement1['status_str']
         videoinfo={'format':requirement2['format'],'chroma':requirement2['chroma'],'biterate':requirement2['bitrate']}
         audioinfo={'audio1':requirement3[0],'audio2':requirement3[1],'audio3':requirement3[2],'audio4':requirement3[3]}
-        avinfo={'decoding status':decoding_status,'video info':videoinfo,'audioallinfo':audioinfo}
-
+        avinfo={'position':i,'decoding status':decoding_status,'video info':videoinfo,'audioallinfo':audioinfo}
+        alldecoder.append()
     print info1,info2
     print type(decoderall)
     r.set(str(ivpid)+'decodergroup',avinfo)
+    r.set(str(ivpid)+'decodersstatus',decoderall)
     #return json.dumps(decoderall)
     return json.dumps(avinfo)
     '''
