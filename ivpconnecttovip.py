@@ -112,9 +112,9 @@ def allivpsboards():
 
 #get single device work status
 @app.route('/ivps/readygroup')
-def singledevicereadygroup():
-    
-    ivpid = request.args.get('ivpid')
+def singledevicereadygroup(ivpid='test'):
+    if ivpid=='test':
+        ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
     info=readyboards(str(ip),allencodergroup,alldecodergroup)
@@ -135,8 +135,9 @@ def singledevicereadygroup():
 
 #look all encoder info in single device//--------these requirements are implemented by mrs yao
 @app.route('/ivps/encoders')
-def singledeviceencoderinfo():
-    ivpid = request.args.get('ivpid')
+def singledeviceencoderinfo(ivpid='test'):
+    if ivpid=='test':
+        ivpid = request.args.get('ivpid')    
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
     info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
@@ -183,6 +184,7 @@ def singledeviceencoderinfo():
     #print encoderall
     print red('i will print big bang')
     print bigbang
+    r.set(str(ivpid)+'encodergroup',str(bigbang))
     #return json.dumps(encoderall)    
     return json.dumps(bigbang)
     '''
@@ -201,8 +203,9 @@ def singledeviceencoderinfo():
 #lookup decoder info in single device   
 
 @app.route('/ivps/decoders')
-def singledevicedecoderinfo(*args):
-    ivpid = request.args.get('ivpid')
+def singledevicedecoderinfo(ivpid='test'):
+    if ivpid=='test'
+        ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     #print readyboards(str(ip)
     info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
@@ -314,8 +317,9 @@ def getsmipge(ip,ge):
 #test yangming
 #lookup smip info in function 
 @app.route('/smipfunction')
-def getsmip1():
-    ivpid = request.args.get('ivpid')
+def getsmip1(ivpid='test'):
+    if ivpid=='test'
+        ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     try:
         info1=getsmipge(ip,0)
@@ -341,6 +345,14 @@ def getsmip1():
 
 
 
+for k in range(5):
+    singledeviceencoderinfo(ivpid='ivp201705170754')
+
+
+
+
+
+
 if __name__ == '__main__':
-   app.run('0.0.0.0',50,debug='True')
+   app.run('0.0.0.0',60,debug='True')
 
