@@ -575,7 +575,7 @@ def allpos(*args):
 def getsmip(ivpid='test'):
     if ivpid=='test':
         ivpid = request.args.get('ivpid')
-    reslut=r.get(str(ivpid)+'smipinfo')
+    result=r.get(str(ivpid)+'smipinfo')
     finalresult=ast.literal_eval(result)     
     return json.dumps(finalresult)
 
