@@ -345,7 +345,7 @@ def singledevicereadygroup():
 #lookup decoder info in single device   
 
 @app.route('/ivps/encoders')
-def singledevicedecoderinfo(ivpid='test'):
+def singledeviceencoderinfo(ivpid='test'):
     if ivpid=='test':
         ivpid = request.args.get('ivpid')
     result=r.get(str(ivpid)+'encodergroup') 
