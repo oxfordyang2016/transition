@@ -360,7 +360,7 @@ def singledeviceencoderinfo(ivpid='test'):
 def singledevicedecoderinfo(ivpid='test'):
     if ivpid=='test':
         ivpid = request.args.get('ivpid')
-    result=r.get(str(ivpid)+'decoderstatus') 
+    result=r.get(str(ivpid)+'decodersstatus') 
     finalresult=ast.literal_eval(result)     
     return json.dumps(finalresult)
 
