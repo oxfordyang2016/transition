@@ -108,19 +108,6 @@ def allivpsboards():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #Being ready group ofsingle device 
 
 #get single device work status
@@ -192,14 +179,6 @@ def singledeviceencoderinfo():
         encoder['info1']=info1
         encoder['info2']=info2
         encoderall[str(i)]=encoder
-    #print info1,info2
-    
-
-    print"""
-
-                             return info
-
-           """
     #print type(encoderall)
     #print encoderall
     print red('i will print big bang')
