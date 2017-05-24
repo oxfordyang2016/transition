@@ -189,9 +189,9 @@ def singledeviceencoderinfo(ivpid='test'):
     '''
 
 
-for k in range(5):
-    #singledeviceencoderinfo(ivpid='ivp201705170754')
-    singledevicedecoderinfo(ivpid='ivp201705170754')
+for k in range(100):
+    singledeviceencoderinfo(ivpid='ivp201705170754')
+    #singledevicedecoderinfo(ivpid='ivp201705170754')
     #getsmip1(ivpid='ivp201705170754')
 
 

@@ -181,7 +181,7 @@ def singledevicedecoderinfo(ivpid='test'):
     '''
 
 
-for k in range(5):
+for k in range(115):
     #singledeviceencoderinfo(ivpid='ivp201705170754')
     singledevicedecoderinfo(ivpid='ivp201705170754')
     #getsmip1(ivpid='ivp201705170754')
@@ -191,5 +191,5 @@ for k in range(5):
 
 
 if __name__ == '__main__':
-   app.run('0.0.0.0',90,debug='True')
+   app.run('0.0.0.0',100,debug='True')
 
