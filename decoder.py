@@ -173,7 +173,7 @@ def singledevicedecoderinfo(ivpid='test'):
     print info1,info2
     print type(decoderall)
     r.set(str(ivpid)+'decodergroup',avinfo)
-    r.set(str(ivpid)+'decodersstatus',decoderall)
+    r.set(str(ivpid)+'decodersstatus',alldecoder)
     #return json.dumps(decoderall)
     return json.dumps(avinfo)
     '''
