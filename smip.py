@@ -92,6 +92,7 @@ def getsmipge(ip,ge):
     
     #you need to set the bufftime mechinism
     stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],'disconnect':st0['off_t'],'source':st0['source'],'ge':st3['ge'],'mode':st0['status']}} 
+    
     key1=smipinfo1['Body']
     '''
     {u'ip_profile': u'{"ad":"10.10.10.12","mac":"88:C2:55:8C:A0:90","mask":"255.255.255.0","ge":0,"dns":"10.10.10.1","ipmode":1,"io":0,"de":"","an":1,"spddup":3,"s":1,"bf":0}'
@@ -183,7 +184,7 @@ def getlink(ivpid='test'):
                 [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])        
         r.set(str(ivpid)+'stream4',st4)
     except:
-        r.set(str(ivpid)+'stream4','no') 
+            r.set(str(ivpid)+'stream4','no') 
     return 'test'
 
 
