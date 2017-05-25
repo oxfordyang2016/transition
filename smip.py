@@ -157,47 +157,40 @@ def getlink(ivpid='test'):
     st4=ast.literal_eval(stream4)
     try:
         if st1['Body']['Route_records']!=[]:
-            r.write('stream1source',\
+            r.set('stream1source',\
                 [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])
-        r.wirte('stream1',st1)
+        r.set(str(ivpid)+'stream1',st1)
     except:
-        r.write('stream1','no')    
+        r.set(str(ivpid)+'stream1','no')    
     try:
         if st1['Body']['Route_records']!=[]:
-            r.write('stream1source',\
+            r.set(str(ivpid)+'stream2source',\
                 [st2['Body']['Route_records'][0]['src_id'],st2['Body']['Route_records'][0]['src_port']])        
-        r.write('stream2',st2)
+
+        r.set(str(ivpid)+'stream2',st2)
     except:
-        r.write('stream2','no') 
+        r.set(str(ivpid)+'stream2','no') 
     try:
         if st1['Body']['Route_records']!=[]:
-            r.write('stream1source',\
+            r.set(str(ivpid)+'stream3source',\
                 [st3['Body']['Route_records'][0]['src_id'],st3['Body']['Route_records'][0]['src_port']])        
-        r.write('stream3',st3)
+        r.set(str(ivpid)+'stream3',st3)
     except:
-        r.write('stream3','no') 
+        r.set(str(ivpid)+'stream3','no') 
     try:
         if st1['Body']['Route_records']!=[]:
-            r.write('stream1source',\
+            r.set(st(ivpid)+stream4source',\
                 [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])        
-        r.write('stream4',st4)
+        r.set(str(ivpid)+'stream4',st4)
     except:
-        r.write('stream1','no') 
-
-
-                        
-    r.set(str(ivpid)+'stream1',stream1)
-    r.set(str(ivpid)+'stream2',stream2)
-    r.set(str(ivpid)+'stream3',stream3)
-    r.set(str(ivpid)+'stream4',stream4)
-    print(stream1)
+        r.set(str(ivpid)+'stream4','no') 
     return 'test'
 
 
 
 for k in range(115):
     getsmip1(ivpid='ivp201705170754')
-    getkink(ivpid='ivp201705170754')
+    getlink(ivpid='ivp201705170754')
 
 
 
