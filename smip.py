@@ -157,13 +157,13 @@ def getlink(ivpid='test'):
     st4=ast.literal_eval(stream4)
     try:
         if st1['Body']['Route_records']!=[]:
-            r.set('stream1source',\
+            r.set(str(ivpid)+'stream1source',\
                 [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])
         r.set(str(ivpid)+'stream1',st1)
     except:
         r.set(str(ivpid)+'stream1','no')    
     try:
-        if st1['Body']['Route_records']!=[]:
+        if st2['Body']['Route_records']!=[]:
             r.set(str(ivpid)+'stream2source',\
                 [st2['Body']['Route_records'][0]['src_id'],st2['Body']['Route_records'][0]['src_port']])        
 
@@ -171,22 +171,23 @@ def getlink(ivpid='test'):
     except:
         r.set(str(ivpid)+'stream2','no') 
     try:
-        if st1['Body']['Route_records']!=[]:
+        if st3['Body']['Route_records']!=[]:
             r.set(str(ivpid)+'stream3source',\
                 [st3['Body']['Route_records'][0]['src_id'],st3['Body']['Route_records'][0]['src_port']])        
         r.set(str(ivpid)+'stream3',st3)
     except:
         r.set(str(ivpid)+'stream3','no') 
     try:
-        if st1['Body']['Route_records']!=[]:
-            r.set(st(ivpid)+stream4source',\
-                [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])        
         r.set(str(ivpid)+'stream4',st4)
+        if st4['Body']['Route_records']!=[]:
+            r.set(st(ivpid)+'stream4source',[st4['Body']['Route_records'][0]['src_id'],st4['Body']['Route_records'][0]['src_port']])        
     except:
         r.set(str(ivpid)+'stream4','no') 
+    
+
     return 'test'
 
-
+#what is wrong
 
 for k in range(115):
     getsmip1(ivpid='ivp201705170754')
