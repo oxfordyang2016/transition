@@ -57,8 +57,6 @@ def paserip(ivpid):
 getsmipge('192.168,201',3)
 '''
 def getsmipge(ivpid,ge):
-    if ivpid=='test':
-        ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))    
     try:
         smipinfo0=requests.get('http://'+str(ip)+'/boardcontroller.cgi?action=get&object=slot6&key=channel_status&instanceID='+str(ge)).json()
