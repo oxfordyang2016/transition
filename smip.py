@@ -56,10 +56,9 @@ def paserip(ivpid):
 '''
 getsmipge('192.168,201',3)
 '''
-def getsmipge(ivpid,ge):
-    ip=paserip(str(ivpid))    
+def getsmipge(ip,ge):
     try:
-        smipinfo0=requests.get('http://'+str(ip)+'/boardcontroller.cgi?action=get&object=slot6&key=channel_status&instanceID='+str(ge)).json()
+        smipinfo0=requests.get('http://'+str(ip)+'/boardcontroller.cgi?action=get&object=slot6&key=channel_status&instanceID='+str(ge) ).json()
         smipinfo1=requests.get('http://'+str(ip)+'/boardcontroller.cgi?action=get&object=slot6&key=ip_profile&instanceID='+str(ge)).json()
     except:
         smipinfo0=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot6&key=channel_status&instanceID='+str(ge) ).json()
@@ -93,7 +92,7 @@ def getsmipge(ivpid,ge):
     
     #you need to set the bufftime mechinism
     stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],'disconnect':st0['off_t'],'source':st0['source'],'ge':st3['ge'],'mode':st0['status']}} 
-    r.set(str(ivpid)+'stream'+str(ge+1)+'ip',st0['ipaddress'])
+    
     key1=smipinfo1['Body']
     '''
     {u'ip_profile': u'{"ad":"10.10.10.12","mac":"88:C2:55:8C:A0:90","mask":"255.255.255.0","ge":0,"dns":"10.10.10.1","ipmode":1,"io":0,"de":"","an":1,"spddup":3,"s":1,"bf":0}'
@@ -116,22 +115,21 @@ def getsmip1(ivpid='test'):
         ivpid = request.args.get('ivpid')
     ip=paserip(str(ivpid))
     try:
-        info1=getsmipge(ivpid,0)
-        r.set('stream1ip',)
+        info1=getsmipge(ip,0)
     except:
         info1='the info of ge1 does not exist '
     try:
-        info2=getsmipge(ivpid,1)
+        info2=getsmipge(ip,1)
     except:
         info2='the info if ge2 does not exsit'
 
     try:    
-        info3=getsmipge(ivpid,2)
+        info3=getsmipge(ip,2)
     except:
         info3='the info of ge3 does not exsit'
 
     try:    
-        info4=getsmipge(ivpid,3)
+        info4=getsmipge(ip,3)
     except:
         info4='the info of ge4  does not exsit'
 
