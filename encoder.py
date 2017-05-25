@@ -138,7 +138,7 @@ def singledeviceencoderinfo(ivpid='test'):
     info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
     encoder=info[1]
     encoderall={}
-    alldecoder=[]
+    allencoder=[]
     for i in encoder:
         print i
         encoder={}
