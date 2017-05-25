@@ -157,32 +157,32 @@ def getlink(ivpid='test'):
     st4=ast.literal_eval(stream4)
     try:
         if st1['Body']['Route_records']!=[]:
-            r.write('stream1source',\
+            r.set('stream1source',\
                 [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])
-        r.wirte('stream1',st1)
+        r.set('stream1',st1)
     except:
-        r.write('stream1','no')    
+        r.set('stream1','no')    
     try:
         if st1['Body']['Route_records']!=[]:
-            r.write('stream1source',\
+            r.set('stream1source',\
                 [st2['Body']['Route_records'][0]['src_id'],st2['Body']['Route_records'][0]['src_port']])        
-        r.write('stream2','st2')
+        r.set('stream2','st2')
     except:
-        r.write('stream2','no') 
+        r.set('stream2','no') 
     try:
         if st1['Body']['Route_records']!=[]:
-            r.write('stream1source',\
+            r.set('stream1source',\
                 [st3['Body']['Route_records'][0]['src_id'],st3['Body']['Route_records'][0]['src_port']])        
-        r.write('stream3',st3)
+        r.set('stream3',st3)
     except:
-        r.write('stream3','no') 
+        r.set('stream3','no') 
     try:
         if st1['Body']['Route_records']!=[]:
-            r.write('stream1source',\
+            r.set('stream1source',\
                 [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])        
-        r.write('stream4',st4)
+        r.set('stream4',st4)
     except:
-        r.write('stream1','no') 
+        r.set('stream1','no') 
 
 
                         
@@ -197,7 +197,7 @@ def getlink(ivpid='test'):
 
 for k in range(115):
     getsmip1(ivpid='ivp201705170754')
-    getkink(ivpid='ivp201705170754')
+    getlink(ivpid='ivp201705170754')
 
 
 
