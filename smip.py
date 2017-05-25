@@ -143,10 +143,49 @@ def getlink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
     ip=paserip(str(ivpid))    
-    stream1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out0').text
-    stream2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out1').text
-    stream3=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out2').text
-    stream4=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out3').text
+    stream1=requests.get('http://'+str(ip)+\
+        '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out0').text
+    stream2=requests.get('http://'+str(ip)+\
+        '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out1').text
+    stream3=requests.get('http://'+str(ip)+\
+        '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out2').text
+    stream4=requests.get('http://'+str(ip)+\
+        '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out3').text
+    st1=ast.literal_eval(stream1)
+    st2=ast.literal_eval(stream2)
+    st3=ast.literal_eval(stream3)
+    st4=ast.literal_eval(stream4)
+    try:
+        if st1['Body']['Route_records']!=[]:
+            r.write('stream1source',\
+                [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])
+        r.wirte('stream1',st1)
+    except:
+        r.write('stream1','no')    
+    try:
+        if st1['Body']['Route_records']!=[]:
+            r.write('stream1source',\
+                [st2['Body']['Route_records'][0]['src_id'],st2['Body']['Route_records'][0]['src_port']])        
+        r.write('stream2','st2')
+    except:
+        r.write('stream2','no') 
+    try:
+        if st1['Body']['Route_records']!=[]:
+            r.write('stream1source',\
+                [st3['Body']['Route_records'][0]['src_id'],st3['Body']['Route_records'][0]['src_port']])        
+        r.write('stream3',st3)
+    except:
+        r.write('stream3','no') 
+    try:
+        if st1['Body']['Route_records']!=[]:
+            r.write('stream1source',\
+                [st1['Body']['Route_records'][0]['src_id'],st1['Body']['Route_records'][0]['src_port']])        
+        r.write('stream4',st4)
+    except:
+        r.write('stream1','no') 
+
+
+                        
     r.set(str(ivpid)+'stream1',stream1)
     r.set(str(ivpid)+'stream2',stream2)
     r.set(str(ivpid)+'stream3',stream3)
