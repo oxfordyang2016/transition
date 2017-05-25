@@ -174,8 +174,8 @@ def singledevicedecoderinfo(ivpid='test'):
     print type(decoderall)
     r.set(str(ivpid)+'decodergroup',avinfo)
     r.set(str(ivpid)+'decodersstatus',alldecoder)
-    #return json.dumps(decoderall)
-    return json.dumps(avinfo)
+    return json.dumps(decoderall)
+    #return json.dumps(avinfo)
     '''
     info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
     #encoderall['info1']=info1
