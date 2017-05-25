@@ -91,7 +91,7 @@ def getsmipge(ip,ge):
     print(st0)
     
     #you need to set the bufftime mechinism
-    stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],'disconnect':st0['off_t'],'ge':st3['ge'],'mode':st0['status']}} 
+    stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],'disconnect':st0['off_t'],'source':st0['source'],ge':st3['ge'],'mode':st0['status']}} 
     key1=smipinfo1['Body']
     '''
     {u'ip_profile': u'{"ad":"10.10.10.12","mac":"88:C2:55:8C:A0:90","mask":"255.255.255.0","ge":0,"dns":"10.10.10.1","ipmode":1,"io":0,"de":"","an":1,"spddup":3,"s":1,"bf":0}'
@@ -135,6 +135,24 @@ def getsmip1(ivpid='test'):
     allinfo={'info1':info1,'info2':info2,'info3':info3,'info4':info4}
     r.set(str(ivpid)+'smipinfo',allinfo)
     return json.dumps(allinfo)
+
+
+
+@app.route('/link'):
+def getlink(ivpid='test'):
+    if ivpid=='test':
+        ivpid=request.args.get('ivpid')
+    ip=paserip(str(ivpid))    
+    stream1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out0').text
+    stream2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out1').text
+    stream3=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out2').text
+    stream4=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out3').text
+    r.set(str(ivpid)+'stream1',stream1)
+    r.set(str(ivpid)+'stream2',stream2)
+    r.set(str(ivpid)+'stream3',stream3)
+    r.set(str(ivpid)+'stream4',stream4)
+    print(stream1)
+    return 'test'
 
 
 
