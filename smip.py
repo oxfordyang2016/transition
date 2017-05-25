@@ -91,7 +91,7 @@ def getsmipge(ip,ge):
     print(st0)
     
     #you need to set the bufftime mechinism
-    stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],'disconnect':st0['off_t'],'source':st0['source'],ge':st3['ge'],'mode':st0['status']}} 
+    stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],'disconnect':st0['off_t'],'source':st0['source'],'ge':st3['ge'],'mode':st0['status']}} 
     key1=smipinfo1['Body']
     '''
     {u'ip_profile': u'{"ad":"10.10.10.12","mac":"88:C2:55:8C:A0:90","mask":"255.255.255.0","ge":0,"dns":"10.10.10.1","ipmode":1,"io":0,"de":"","an":1,"spddup":3,"s":1,"bf":0}'
@@ -138,7 +138,7 @@ def getsmip1(ivpid='test'):
 
 
 
-@app.route('/link'):
+@app.route('/link')
 def getlink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
@@ -158,7 +158,7 @@ def getlink(ivpid='test'):
 
 for k in range(115):
     getsmip1(ivpid='ivp201705170754')
-
+    getkink(ivpid='ivp201705170754')
 
 
 
