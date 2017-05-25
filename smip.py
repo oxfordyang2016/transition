@@ -166,7 +166,7 @@ def getlink(ivpid='test'):
         if st1['Body']['Route_records']!=[]:
             r.write('stream1source',\
                 [st2['Body']['Route_records'][0]['src_id'],st2['Body']['Route_records'][0]['src_port']])        
-        r.write('stream2','st2')
+        r.write('stream2',st2)
     except:
         r.write('stream2','no') 
     try:
