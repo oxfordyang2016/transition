@@ -169,7 +169,7 @@ def singledevicedecoderinfo(ivpid='test'):
         videoinfo={'format':requirement2['format'],'chroma':requirement2['chroma'],'biterate':requirement2['bitrate']}
         audioinfo={'audio1':requirement3[0],'audio2':requirement3[1],'audio3':requirement3[2],'audio4':requirement3[3]}
         avinfo={'position':i,'decoding status':decoding_status,'video info':videoinfo,'audioallinfo':audioinfo}
-        alldecoder.append()
+        alldecoder.append(avinfo)
     print info1,info2
     print type(decoderall)
     r.set(str(ivpid)+'decodergroup',avinfo)
