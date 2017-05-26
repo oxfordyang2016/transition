@@ -205,6 +205,26 @@ def getlink(ivpid='test'):
             r.set(str(ivpid)+'stream4','no') 
     return 'test'
 
+
+
+#detect that a given ip in which ge of which ivp smip
+def singleivpsmipipsettinggroup(ivpid):
+    ipgroup=[]
+    for ge in range(3): 
+        ipgroup.append(r.get(str(ivpid)+'smipge'+str(ge+1)+'ip'))
+    return ipgroup
+
+def accrodingtoiptogetivp(ip):
+    ivpgroup=['ivp201705170754','ivptest']
+    ivpsmipsettingipgroup={}
+    for ivpid in ivpgroup:
+        ivpsmipsettingipgroup[str(ivpid)]=singleivpsmipipsettinggroup(ivpid)
+    for key in ivpsmipsettingipgroup:
+        if str(ip) in ivpsmipsettingipgroup[str(key)]:
+            print('this device is '+key+' ge is ge'+str(ivpsmipsettingipgroup.index(str(key))+1))
+
+
+
 #what is wrong
 def completelink(ivpid='test'):
     if ivpid=='test':
@@ -236,11 +256,14 @@ def completelink(ivpid='test'):
             print(info[1])
             print('this stream distination rx smip ip is')
             print(r.get('stream'+str(count)+'settingip'))
-            '''
+            
             ip=r.get('stream'+str(count)+'settingip')
             print('this stream desitination rx in fellowing deice')
+            accrodingtoiptogetivp(str(ip))
+            '''
             print(r.get('thedeviceof'+str(ip)))
             print('the ge info is the fellowing')
+
             print(r.get('thegeofrxip'+str(ip)))
             print('the corresponding decoder position')
             print(r.get('theencoderofstream'))
