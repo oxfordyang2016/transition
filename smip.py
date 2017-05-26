@@ -117,6 +117,7 @@ def getsmipge(ivpid,ge):
     net0=key1
     net1=ast.literal_eval(net0['ip_profile'])
     geinfo={'Network setting':{'work mode':net1['ipmode'],'mask':net1['mask'],'gateway':net1['ge'],'ip':net1['ad']},'phy configuration':{'an':net1["an"],'phy speed':net1['spddup'],'status':net1['s']}}
+    #r.set('ivpid'+)
     infogroup={'smip-stream'+str(ge):stream,'smipgessetting'+str(ge):geinfo}    
     print green(str(infogroup))
     return infogroup
@@ -235,6 +236,15 @@ def completelink(ivpid='test'):
             print(info[1])
             print('this stream distination rx smip ip is')
             print(r.get('stream'+str(count)+'settingip'))
+            '''
+            ip=r.get('stream'+str(count)+'settingip')
+            print('this stream desitination rx in fellowing deice')
+            print(r.get('thedeviceof'+str(ip)))
+            print('the ge info is the fellowing')
+            print(r.get('thegeofrxip'+str(ip)))
+            print('the corresponding decoder position')
+            print(r.get('theencoderofstream'))
+            '''
             count=count+1
             print ''
 
