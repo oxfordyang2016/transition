@@ -208,7 +208,7 @@ def getlink(ivpid='test'):
 def completelink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
-    singlesmipgroup=[{'stream'+str(k+1):ast.literal_eval(r.get(str(ivpid)+'stream'+str(k+1)+'source')} k for k in range(3) ]
+    singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(3) ]
     '''
     for k in range(3):
         singlesmipgroup.append(ast.literal_eval(r.get(str(ivpid)+'stream'+str(k+1)+'source')))
@@ -223,16 +223,20 @@ def completelink(ivpid='test'):
     '''
     count=1
     for k in singlesmipgroup:
-        info=k['stream'+str(count)]
-        if info!='':
-        print('this stream encoder is the fellowing')
-        print(info[0])
-        print('this stream encoder type is')
-        print(k[1])
-        print('this stream distination rx smip ip is')
-        print(r.get('stream'+str(k+1)+'settingip'))
-        count=count+1
-
+        print yellow('the curent device is '+str(ivpid)+'****')
+        try:
+            info=ast.literal_eval(k['stream'+str(count)])
+        except:
+            break
+        if info!=None:
+            print('this stream'+str(count)+' encoder is the fellowing')
+            print(info[0])
+            print('this stream encoder type is')
+            print(info[1])
+            print('this stream distination rx smip ip is')
+            print(r.get('stream'+str(count)+'settingip'))
+            count=count+1
+            print ''
 
 
 
@@ -243,7 +247,7 @@ def completelink(ivpid='test'):
 for k in range(1):
     getsmip1(ivpid='ivp201705170754')
     getlink(ivpid='ivp201705170754')
-
+    completelink(ivpid='ivp201705170754')
 
 
 
