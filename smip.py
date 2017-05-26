@@ -20,7 +20,7 @@ alldecodergroup=['6','13','14','20','21','30']
 tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
 neededencodergroup=['10']
 neededdecodergroup=['21']
-apiversion='1.0'
+
 db=MySQLdb.connect(host='192.168.0.112', user='root', passwd='123456',db="ivp")
 cursor=db.cursor()
 #define a function to get table row info and write it to dict
@@ -204,8 +204,41 @@ def getlink(ivpid='test'):
             r.set(str(ivpid)+'stream4','no') 
     return 'test'
 
-
 #what is wrong
+def completelink(ivpid='test'):
+    if ivpid=='test':
+        ivpid=request.args.get('ivpid')
+    singlesmipgroup=[{'stream'+str(k+1):ast.literal_eval(r.get(str(ivpid)+'stream'+str(k+1)+'source')} k for k in range(3) ]
+    '''
+    for k in range(3):
+        singlesmipgroup.append(ast.literal_eval(r.get(str(ivpid)+'stream'+str(k+1)+'source')))
+    for k in singlesmipgroup:
+        if k!='':
+            print('this stream encoder is the fellowing')
+            print (k[0])
+            print('this stream encoder type is')
+            print(k[1])
+            print('this stream distination rx smip is')
+            print(r.get(stream1settingip))
+    '''
+    count=1
+    for k in singlesmipgroup:
+        info=k['stream'+str(k+1)]
+        if info!='':
+        print('this stream encoder is the fellowing')
+        print(info[0])
+        print('this stream encoder type is')
+        print(k[1])
+        print('this stream distination rx smip ip is')
+        print(r.get('stream'+str(k+1)+'settingip'))
+        
+
+
+
+
+
+
+
 
 for k in range(1):
     getsmip1(ivpid='ivp201705170754')
