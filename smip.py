@@ -210,20 +210,24 @@ def getlink(ivpid='test'):
 #detect that a given ip in which ge of which ivp smip
 def singleivpsmipipsettinggroup(ivpid):
     ipgroup=[]
-    for ge in range(3): 
+    for ge in range(4):
+        #print('ge is '+str(ge)+r.get(str(ivpid)+'smipge'+str(ge+1)+'ip')) 
         ipgroup.append(r.get(str(ivpid)+'smipge'+str(ge+1)+'ip'))
+    print green(str(ipgroup))
     return ipgroup
 
 def accrodingtoiptogetivp(ip):
-    ivpgroup=['ivp201705170754','ivptest']
+    ivpgroup=['ivp201705170754']
     ivpsmipsettingipgroup={}
     for ivpid in ivpgroup:
         ivpsmipsettingipgroup[str(ivpid)]=singleivpsmipipsettinggroup(ivpid)
+    print yellow(str(ivpsmipsettingipgroup))
     for key in ivpsmipsettingipgroup:
         if str(ip) in ivpsmipsettingipgroup[str(key)]:
-            print('this device is '+key+' ge is ge'+str(ivpsmipsettingipgroup.index(str(key))+1))
-
-
+            print red(str(ivpsmipsettingipgroup[str(key)]))
+            print 'the device is '+str(key)
+            print('this device is '+str(key)+' ge is ge'+str(ivpsmipsettingipgroup[str(key)].index(str(ip))+1))
+            break
 
 #what is wrong
 def completelink(ivpid='test'):
