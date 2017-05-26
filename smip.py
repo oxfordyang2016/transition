@@ -117,7 +117,7 @@ def getsmipge(ivpid,ge):
     net0=key1
     net1=ast.literal_eval(net0['ip_profile'])
     geinfo={'Network setting':{'work mode':net1['ipmode'],'mask':net1['mask'],'gateway':net1['ge'],'ip':net1['ad']},'phy configuration':{'an':net1["an"],'phy speed':net1['spddup'],'status':net1['s']}}
-    r.set(str(ivpid)+'smipge'+str(ge+1)+'ip':net1['ad'])
+    r.set(str(ivpid)+'smipge'+str(ge+1)+'ip',net1['ad'])
     infogroup={'smip-stream'+str(ge):stream,'smipgessetting'+str(ge):geinfo}    
     print green(str(infogroup))
     return infogroup
