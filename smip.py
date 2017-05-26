@@ -223,7 +223,7 @@ def completelink(ivpid='test'):
     '''
     count=1
     for k in singlesmipgroup:
-        info=k['stream'+str(k+1)]
+        info=k['stream'+str(count)]
         if info!='':
         print('this stream encoder is the fellowing')
         print(info[0])
@@ -231,7 +231,7 @@ def completelink(ivpid='test'):
         print(k[1])
         print('this stream distination rx smip ip is')
         print(r.get('stream'+str(k+1)+'settingip'))
-        
+        count=count+1
 
 
 
