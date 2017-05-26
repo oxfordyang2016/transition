@@ -181,7 +181,24 @@ def singledevicedecoderinfo(ivpid='test'):
     #encoderall['info1']=info1
     return info1
     '''
-
+def decodersource(ivpid):
+    if ivpid=='test':
+        ivpid = request.args.get('ivpid')
+    ip=paserip(str(ivpid)) 
+    '''
+    http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot4&slotport=sub_in_0&id=0.0852252272940579 
+    '''
+    ivpdecodergroup=['slot4']
+    infogroup=[]
+    for decoder in ivpdecodergroup:
+        info=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid='+str(decoder)+'slotport=sub_in_0').text 
+        finalinfo=ast.literal_eval(info)
+        try:
+            if 'slot6' in finalinfo['Body']['Route_records']["src_id"]:
+                r.set(str(decoder)+'correspondingsmip',finalinfo['Body']['Route_records']["src_port"])
+                r.set(str(ivpid)+finalinfo['Body']['Route_records']["src_port"],decoder)
+        except:
+            r.set('ivpidencodersmip'+str(decoder),'')
 
 for k in range(115):
     #singledeviceencoderinfo(ivpid='ivp201705170754')
