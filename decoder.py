@@ -203,6 +203,7 @@ def decodersource(ivpid):
 for k in range(115):
     #singledeviceencoderinfo(ivpid='ivp201705170754')
     singledevicedecoderinfo(ivpid='ivp201705170754')
+    
     #getsmip1(ivpid='ivp201705170754')
 
 
