@@ -226,9 +226,10 @@ def accrodingtoiptogetivp(ip):
         if str(ip) in ivpsmipsettingipgroup[str(key)]:
             print red(str(ivpsmipsettingipgroup[str(key)]))
             print 'the device is '+str(key)
+            #get device id and ge position
             print('this device is '+str(key)+' ge is ge'+str(ivpsmipsettingipgroup[str(key)].index(str(ip))+1))
-            break
-
+            #break
+            return [key,str(str(ivpsmipsettingipgroup[str(key)].index(str(ip))+1))]
 #what is wrong
 def completelink(ivpid='test'):
     if ivpid=='test':
@@ -263,14 +264,13 @@ def completelink(ivpid='test'):
             
             ip=r.get('stream'+str(count)+'settingip')
             print('this stream desitination rx in fellowing deice')
-            accrodingtoiptogetivp(str(ip))
-            '''
-            print(r.get('thedeviceof'+str(ip)))
-            print('the ge info is the fellowing')
-
-            print(r.get('thegeofrxip'+str(ip)))
+            distination=accrodingtoiptogetivp(str(ip))
+            coivp,coge=distination[0],desitination[1]
+            print('the destination ivp is '+str(coivp))
+            print('this device corresponding ge is ge'+str(coge))
             print('the corresponding decoder position')
-            print(r.get('theencoderofstream'))
+            print(r.get(str(coivp)+'SMIP_In'+str(ge-1))
+            '''
             '''
             count=count+1
             print ''
