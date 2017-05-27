@@ -1,17 +1,9 @@
-from colors import red, green, blue,yellow
+from colors import *
 from flask import Flask,request
 app = Flask(__name__)
-import requests
-import json
+import requests,json,ast
+from ivpdb import *
 from time import strftime 
-import MySQLdb
-import ast
-import redis
-r = redis.StrictRedis(host='localhost', port=6379, db=0)
-redisallkey=[]
-
-
-
 
 
 #board group
@@ -21,38 +13,6 @@ tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
 neededencodergroup=['10']
 neededdecodergroup=['21']
 apiversion='1.0'
-db=MySQLdb.connect(host='192.168.0.112', user='root', passwd='123456',db="ivp")
-cursor=db.cursor()
-#define a function to get table row info and write it to dict
-def getrow():
-    # commit your changes
-    db.commit()
-    tabledict={}
-    numrows = int(cursor.rowcount)
-    num_fields = len(cursor.description)
-    field_names = [i[0] for i in cursor.description]
-    for x in range(0,numrows):
-        row = cursor.fetchone()
-        #print(row)
-        tmpdict={}
-        for k in range(0,len(row)):
-            #print str(field_names[k])+"                 |---------------------------->"+str(row[k]) 
-            tmpdict[str(field_names[k])]=str(row[k])
-        tabledict[str(x)]=tmpdict
-    return tabledict
-
-
-
-#parser the ip of ivp device according to ivpid
-def paserip(ivpid):
-    cursor.execute("select * from infoofivp where ivpid= "+"'"+str(ivpid)+"'")
-    registeredinfo=getrow()
-    ip=registeredinfo['0']['ip']
-    print(ip)
-    return ip
-      
-
-
 
 
 def readyboards(ip,encodergroup,decodergroup):
@@ -83,7 +43,7 @@ def allivpsboards():
     #result0=readyboards(ip,allencodergroup,alldecodergroup)
 
     for k in ivpidgroup:
-        ip=paserip(str(k))
+        ip=parserip(str(k))
         #result0=readyboards(str(ip),allencodergroup,alldecodergroup)
         try:
             print red('are you ok-------------')
@@ -115,7 +75,7 @@ def allivpsboards():
 def singledevicereadygroup(ivpid='test'):
     if ivpid=='test':
         ivpid = request.args.get('ivpid')
-    ip=paserip(str(ivpid))
+    ip=parserip(str(ivpid))
     #print readyboards(str(ip)
     info=readyboards(str(ip),allencodergroup,alldecodergroup)
     k=info[0] 
@@ -133,7 +93,7 @@ def singledevicereadygroup(ivpid='test'):
 def singledeviceencoderinfo(ivpid='test'):
     if ivpid=='test':
         ivpid = request.args.get('ivpid')    
-    ip=paserip(str(ivpid))
+    ip=parserip(str(ivpid))
     #print readyboards(str(ip)
     info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
     encoder=info[1]
@@ -191,7 +151,7 @@ def singledeviceencoderinfo(ivpid='test'):
     '''
 
 
-for k in range(100):
+for k in range(10):
     singledeviceencoderinfo(ivpid='ivp201705170754')
     #singledevicedecoderinfo(ivpid='ivp201705170754')
     #getsmip1(ivpid='ivp201705170754')

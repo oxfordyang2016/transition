@@ -1,20 +1,11 @@
 from colors import red, green, blue,yellow
 from flask import Flask,request
-app = Flask(__name__)
-import requests
-import json
-import ivpdb
-from  ivpdb  import parserip
+import requests,json,ast
+from  ivpdb  import *
 from time import strftime 
-import ast
-import redis
-r = redis.StrictRedis(host='localhost', port=6379, db=0)
-redisallkey=[]
 
 
-
-
-
+app = Flask(__name__)
 #board group
 allencodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
 alldecodergroup=['6','13','14','20','21','30']

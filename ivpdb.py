@@ -1,6 +1,5 @@
-import requests
-import json
-import MySQLdb
+import MySQLdb,redis
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
 db=MySQLdb.connect(host='192.168.0.112', user='root', passwd='123456',db="ivp")
 cursor=db.cursor()
 #define a function to get table row info and write it to dict

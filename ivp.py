@@ -1,17 +1,9 @@
-from colors import red, green, blue,yellow
+from colors import *
 from flask import Flask,request
 app = Flask(__name__)
-import requests
-import json
+import requests,json,ast
 from time import strftime 
-import MySQLdb
-import ast
-import redis
-r = redis.StrictRedis(host='localhost', port=6379, db=0)
-redisallkey=[]
-
-
-
+from ivpdb import *
 
 
 #board group
@@ -21,61 +13,6 @@ tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
 neededencodergroup=['10']
 neededdecodergroup=['21']
 apiversion='1.0'
-db=MySQLdb.connect(host='192.168.0.112', user='root', passwd='123456',db="ivp")
-cursor=db.cursor()
-#design solution
-'''
-0.clent sends registed info requests including ip,user,phone ect and server save the table in db
-  and initiate the status all device  to be 'first registered'
-
-1.we be-realtime change the status of all devices.the status written by a function ,the function need
-to monitor all boards in the ivp and refresh the status every 10 seconds. 
-
-2.in server  end.we refresh  the table.wow the server has 2 tables .a table is used to maintain the
-  registered info ,another tables is used to log all device monitor info every 5 min
-
-3.client sends request to server ,server tell clients all registered devices
-   and the status of device then.(work/not work/)server give status ,the client send 
-   requests to get detail info of the device(the requirements supplied by mr yao)
-
-4.the standard ,my idea is the fewllowing:
-  fecth the reuirements of every board.if can fecth ,i will give ok.and refresh the deivce registred
-  table.clients send requests and we will fetch the device registered table.    
-
-5.i will give the registered ivp hardware info.use serial number
-6.i can give the link info (enccoder------smip-----smip-----decoder)
-7.seach the info in ivp registred table to detect a  link.
-
-'''
-
-
-
-
-
-
-
-
-
-#define a function to get table row info and write it to dict
-def getrow():
-    # commit your changes
-    db.commit()
-    tabledict={}
-    numrows = int(cursor.rowcount)
-    num_fields = len(cursor.description)
-    field_names = [i[0] for i in cursor.description]
-    for x in range(0,numrows):
-        row = cursor.fetchone()
-        #print(row)
-        tmpdict={}
-        for k in range(0,len(row)):
-            #print str(field_names[k])+"                 |---------------------------->"+str(row[k]) 
-            tmpdict[str(field_names[k])]=str(row[k])
-        tabledict[str(x)]=tmpdict
-    return tabledict
-
-
-
 
 
 @app.route('/')
@@ -96,20 +33,6 @@ def errorcodes():
         return json.dumps({'errorcodelist':errorcodelist,'errorcode':211})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #register ivp
 #r=requests.post('http://192.168.201.142:50/ivps',json={'ip':'192.168.50.182','user':'yangming','addressofdevice':'shanghai','phone':'110'})
 @app.route('/ivps',methods = ['POST'])
@@ -122,35 +45,16 @@ def register():
         registeraddress=getjson['addressofdevice']
         registerphone=getjson['phone']        
         registerivpid='ivp'+strftime('%Y%m%d%H%M')
-        ivpinfo={'user':registeruser,'ip':registerip,'ivpid':registerivpid,'addressofdevice':registeraddress,'phone':registerphone,'errorcode':1}
-        
-        #cursor.execute("INSERT INTO infoofivp  (ivpid,ip) VALUES" +"("+"'"+str(registerivpid)+"'"+","+"'"+str(registerip)+"'"+ ')' )
-        cursor.execute("INSERT INTO infoofivp  (ivpid,ip,user,phone,addressofdevice) VALUES" +"("+"'"+str(registerivpid)+"'"+","+"'"+str(registerip)+"'"+","+"'"+str(registeruser)+"'"+","+"'"+str(registerphone)+"'"+","+"'"+str(registeraddress)+"'" +')')
+        ivpinfo={'user':registeruser,'ip':registerip,'ivpid':registerivpid,\
+                 'addressofdevice':registeraddress,'phone':registerphone,'errorcode':1}
+        cursor.execute("INSERT INTO infoofivp  (ivpid,ip,user,phone,addressofdevice) VALUES"\
+                   +"("+"'"+str(registerivpid)+"'"+","+"'"+str(registerip)+"'"+","+"'"+\
+                   str(registeruser)+"'"+","+"'"+str(registerphone)+"'"+","+"'"+\
+                   str(registeraddress)+"'" +')')
         db.commit()
-
-
         return json.dumps(ivpinfo)
-    #else:
-        #user = request.args.get('nm')
-        #return redirect(url_for('success',name = user))
-        #return json.dumps({'errorcode':89})
-        #workstatus()
 
-#parser the ip of ivp device according to ivpid
-def paserip(ivpid):
-    cursor.execute("select * from infoofivp where ivpid= "+"'"+str(ivpid)+"'")
-    registeredinfo=getrow()
-    ip=registeredinfo['0']['ip']
-    print(ip)
-    return ip
       
-
-
-#paserip('ivp201704120052')
-
-
-
-
 
 #lookup registered ivp device
 @app.route('/ivps/registered')
@@ -168,12 +72,9 @@ def registered(*args):
         registeredinfo=getrow()
         print registeredinfo
     
-    #print('hallo')
     return json.dumps(registeredinfo)
 
 
-#lookup all registered ivps
-#i need to rethink that does it work with ivp device code?
 
 
 @app.route('/ivps',methods=['GET'])
@@ -194,13 +95,6 @@ def workstatus(*args):
         #tmp error code =11
         result={'statuslist':'','errorcode':11}    
     return json.dumps(result)
-
-
-
-
-
-
-
 
 
 
@@ -236,7 +130,7 @@ def allivpsboards():
     #result0=readyboards(ip,allencodergroup,alldecodergroup)
 
     for k in ivpidgroup:
-        ip=paserip(str(k))
+        ip=parserip(str(k))
         #result0=readyboards(str(ip),allencodergroup,alldecodergroup)
         try:
             print red('are you ok-------------')
@@ -310,24 +204,12 @@ def getallpostions(*args):
 
 
 
-
-
-#Being ready group ofsingle device 
-
-
-
-
-
-
-
-#Being ready group ofsingle device 
-
 #get single device work status
 @app.route('/ivps/readygroup')
 def singledevicereadygroup():
     
     ivpid = request.args.get('ivpid')
-    ip=paserip(str(ivpid))
+    ip=parserip(str(ivpid))
     #print readyboards(str(ip)
     info=readyboards(str(ip),allencodergroup,alldecodergroup)
     k=info[0] 
@@ -383,31 +265,6 @@ def allpos(*args):
 
     result={'ivp_list':allposlist,'errorcode':0}
     return json.dumps(result)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #lookup smip info
