@@ -4,10 +4,6 @@ app = Flask(__name__)
 import requests,json,ast,redis
 from time import strftime 
 from  ivpdb import *
-r = redis.StrictRedis(host='localhost', port=6379, db=0)
-redisallkey=[]
-
-
 
 
 

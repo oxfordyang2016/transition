@@ -41,3 +41,21 @@ def allivpdevice():
     for k in  range(thenumberofdevices):
         deviceslist.append(alldevice[str(k)]['ivpid'])
     return deviceslist
+
+
+
+def readyboards(ip,encodergroup,decodergroup):
+    '''
+    request example
+    requests.get('http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=boardmap&id=0.8234045444577069')
+    '''
+    url='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=boardmap'
+    elegantresponse=ast.literal_eval(requests.get(url).text)
+    #according to encoder/decoder list to decide which type is every board
+    print elegantresponse
+    all=elegantresponse['Body']
+    boardsgroup=[i for i in all.keys() if 'status' not in i]
+    encoder=[d for d in boardsgroup if all[str(d)] in encodergroup]
+    decoder=[d for d in boardsgroup if all[str(d)] in decodergroup]
+    print encoder,str(decoder)
+    return [elegantresponse,encoder,decoder]
