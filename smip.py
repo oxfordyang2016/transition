@@ -191,6 +191,9 @@ def accrodingtoiptogetivp(ip):
             print('this device is '+str(key)+' ge is ge'+str(ivpsmipsettingipgroup[str(key)].index(str(ip))+1))
             #break
             return [key,str(str(ivpsmipsettingipgroup[str(key)].index(str(ip))+1))]
+
+
+
 #what is wrong
 def completelink(ivpid='test'):
     if ivpid=='test':
@@ -209,6 +212,7 @@ def completelink(ivpid='test'):
             print(r.get(stream1settingip))
     '''
     count=1
+    singleivpdevicelink=[]
     for k in singlesmipgroup:
         print yellow('the curent device is '+str(ivpid)+'****')
         try:
@@ -232,9 +236,11 @@ def completelink(ivpid='test'):
             print('the corresponding decoder position')
             print(r.get(str(coivp)+'SMIP_In'+str(int(coge)-1)))
             #print('')
-        
+        singleivpdevicelink.append({'stream'+str(count):{'encoder':info[0],\
+            'encodertype':info[1],'destinationsmip':r.get('stream'+str(count)+'settingip'),\
+            'destinationivp':str(coivp),'decoder':r.get(str(coivp)+'SMIP_In'+str(int(coge)-1))}})
         count+=1
-
+     r.set(str(ivpid)+'streamgroup':singleivpdevicelink)
 
 
 
