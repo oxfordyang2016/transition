@@ -43,11 +43,21 @@ def singledeviceencoderinfo(ivpid='test'):
         requirement1=selectedinfo1['Body']
         requirement2=selectedinfo2['Body']
 
-        encoder_status={'encoding_status':requirement1['status_str'],'video input':requirement1['videoinfo_str'],'audio1to4input':{'audio1input':requirement1['audioinfo_str0'],'audio2input':requirement1['audioinfo_str1'],'audio3input':requirement1['audioinfo_str2'],'audio4input':requirement1['audioinfo_str3'], }}
-        print(yellow(str(requirement2)))
+        encoder_status={'encoding_status':requirement1['status_str'],\
+        'video input':requirement1['videoinfo_str'],\
+        'audio1to4input':{'audio1input':requirement1['audioinfo_str0'],\
+        'audio2input':requirement1['audioinfo_str1'],'audio3input':requirement1['audioinfo_str2'],\
+        'audio4input':requirement1['audioinfo_str3'], }}
+        
+
+
+        #print(yellow(str(requirement2)))
         bitratesettingmode=requirement2['bitMode']
 
-        programparameters={'service':requirement2['videoSerName'],'provider':[requirement2['videoPrivoder']],'biterate': [x.strip() for x in requirement2['systemParam'].split(',')][0]}
+        programparameters={'service':requirement2['videoSerName'],\
+        'provider':[requirement2['videoPrivoder']],\
+        'biterate': [x.strip() for x in requirement2['systemParam'].split(',')][0]}
+        
         vp=[x.strip() for x in requirement2['videoParam'].split(',')]
         videoparameters={'source':vp[0],'format':vp[1],'horizontal size':vp[2],'biterate':vp[3],'loss input':vp[-1]}
         ap1=[x.strip() for  x  in requirement2['audioParam0']]

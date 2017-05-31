@@ -25,19 +25,14 @@ def singledevicedecoderinfo(ivpid='test'):
     #print readyboards(str(ip)
     info=readyboards(str(ip),neededencodergroup,neededdecodergroup)
     decoder=info[2]
-    print  yellow('info is it===========================> '+str(info))
-    print blue(str(decoder))
+    #print  yellow('info is it===========================> '+str(info))
+    #print blue(str(decoder))
     decoderall={}
     alldecoder=[]
     for i in decoder:
         print i
         decoder={}
-        #http://192.168.0.181/cgi-bin/boardcontroller.cgi?action=get&object=slot3&key=status
-        print 'http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status'
-        ins1='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=slot'+str(i)+'&key=status'
-        print blue(ins1)
         info1=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=status').text
-
         info2=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=avinfo&value=0').text
         info3=requests.get('http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object='+str(i)+'&key=avinfo&value=1').text
         decoder['info1']=info1
@@ -57,17 +52,17 @@ def singledevicedecoderinfo(ivpid='test'):
         audioinfo={'audio1':requirement3[0],'audio2':requirement3[1],'audio3':requirement3[2],'audio4':requirement3[3]}
         avinfo={'position':i,'decoding status':decoding_status,'video info':videoinfo,'audioallinfo':audioinfo}
         alldecoder.append(avinfo)
-    print info1,info2
-    print type(decoderall)
-    r.set(str(ivpid)+'decodergroup',avinfo)
+    
+
+    r.set(str(ivpid)+'decodergroup',decoder)
     r.set(str(ivpid)+'decodersstatus',alldecoder)
     return json.dumps(decoderall)
-    #return json.dumps(avinfo)
-    '''
-    info1=requests.get('http://192.168.0.181/cig-bin/boardcontroller.cgi?action=get&object='+str(encoder[0])+'&key=status').text
-    #encoderall['info1']=info1
-    return info1
-    '''
+
+
+
+
+
+
 def decodersource(ivpid='test'):
     if ivpid=='test':
         ivpid = request.args.get('ivpid')
@@ -92,6 +87,10 @@ def decodersource(ivpid='test'):
                     r.set(str(ivpid)+finalinfo['Body']['Route_records'][k]["src_port"],decoder)
         except:
             r.set('ivpidencodersmip'+str(decoder),'')
+
+
+
+
 
 for k in range(5):
     #singledeviceencoderinfo(ivpid='ivp201705170754')
