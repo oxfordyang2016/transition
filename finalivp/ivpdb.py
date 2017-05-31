@@ -33,6 +33,10 @@ def parserip(ivpid):
 def allivpdevice():
     cursor.execute("select ivpid from infoofivp")
     alldevice=getrow()
-    return alldevice
+    thenumberofdevices=len(alldevice)
+    deviceslist=[]
+    for k in  range(thenumberofdevices):
+        deviceslist.append(alldevice[str(k+1)]['ivpid'])
+    return deviceslist
 
 
