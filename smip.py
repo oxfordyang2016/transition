@@ -197,7 +197,7 @@ def completelink(ivpid='test'):
         ivpid=request.args.get('ivpid')
     singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(3) ]
     '''
-    for k in range(3):
+    for k in range(4):
         singlesmipgroup.append(ast.literal_eval(r.get(str(ivpid)+'stream'+str(k+1)+'source')))
     for k in singlesmipgroup:
         if k!='':
