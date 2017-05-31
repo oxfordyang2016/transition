@@ -276,11 +276,21 @@ def getsmip(ivpid='test'):
     finalresult=ast.literal_eval(result)     
     return json.dumps(finalresult)
 
-@app.route(/stream):
-def getstream(ivpid='test'):
-    if ivpid=='test':
-        ivpid = request.args.get('ivpid')
-    streaminfo={encoder:'',smipdevice:'',decoder:''}
+
+@app.route('/stream')
+def getalllink():
+    linklist=[]
+    ivpidlist=allivpdevice()    
+    for k in ivpidlist:
+        try:
+            linklist.append({k:r.get(str(k)+'streamgroup')})
+        except:
+            linklist.append({k:'the ivpid has no stream'})
+    
+    finalresult={'errorcode':'200','linklist':linklist}
+    
+    return json.dumps(finalresult)
+
 
 
 
