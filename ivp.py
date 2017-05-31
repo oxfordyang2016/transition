@@ -288,7 +288,7 @@ def getalllink():
             result=ast.literal_eval(singleivplink)
             linklist.append({k:result})
         except:
-            linklist.append({k:'the ivpid has no stream'})
+            linklist.append({k:''})
     
     finalresult={'errorcode':'200','linklist':linklist}
     
