@@ -4,7 +4,7 @@ app = Flask(__name__)
 import requests,json,ast
 from time import strftime 
 from ivpdb import *
-
+import ast
 
 #board group
 allencodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
@@ -284,7 +284,7 @@ def getalllink():
     ivpidlist=allivpdevice()    
     for k in ivpidlist:
         try:
-            singleivplink=r.get(str(k)+'streamgroup'
+            singleivplink=r.get(str(k)+'streamgroup')
             result=ast.literal_eval(singleivplink)
             linklist.append({k:result})
         except:

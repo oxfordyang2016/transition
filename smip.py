@@ -240,7 +240,7 @@ def completelink(ivpid='test'):
             'encodertype':info[1],'destinationsmip':r.get('stream'+str(count)+'settingip'),\
             'destinationivp':str(coivp),'decoder':r.get(str(coivp)+'SMIP_In'+str(int(coge)-1))}})
         count+=1
-     r.set(str(ivpid)+'streamgroup':singleivpdevicelink)
+    r.set(str(ivpid)+'streamgroup',singleivpdevicelink)
 
 
 
