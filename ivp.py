@@ -284,7 +284,9 @@ def getalllink():
     ivpidlist=allivpdevice()    
     for k in ivpidlist:
         try:
-            linklist.append({k:r.get(str(k)+'streamgroup')})
+            singleivplink=r.get(str(k)+'streamgroup'
+            result=ast.literal_eval(singleivplink)
+            linklist.append({k:result})
         except:
             linklist.append({k:'the ivpid has no stream'})
     
