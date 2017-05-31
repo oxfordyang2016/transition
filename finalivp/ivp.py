@@ -276,6 +276,16 @@ def getsmip(ivpid='test'):
     finalresult=ast.literal_eval(result)     
     return json.dumps(finalresult)
 
+@app.route(/stream):
+def getstream(ivpid='test'):
+    if ivpid=='test':
+        ivpid = request.args.get('ivpid')
+    streaminfo={encoder:'',smipdevice:'',decoder:''}
+
+
+
+
+
 
 
 if __name__ == '__main__':

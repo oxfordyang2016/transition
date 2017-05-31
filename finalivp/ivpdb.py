@@ -29,6 +29,10 @@ def parserip(ivpid):
     print(ip)
     return ip
 
-
+#parser all ivpid in table
+def allivpdevice():
+    cursor.execute("select ivpid from infoofivp")
+    alldevice=getrow()
+    return alldevice
 
 
