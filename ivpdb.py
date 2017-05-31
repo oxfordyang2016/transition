@@ -39,5 +39,5 @@ def allivpdevice():
     thenumberofdevices=len(alldevice)
     deviceslist=[]
     for k in  range(thenumberofdevices):
-        deviceslist.append(alldevice[str(k+1)]['ivpid'])
+        deviceslist.append(alldevice[str(k)]['ivpid'])
     return deviceslist
