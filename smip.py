@@ -6,12 +6,6 @@ from time import strftime
 
 
 app = Flask(__name__)
-#board group
-allencodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
-alldecodergroup=['6','13','14','20','21','30']
-tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
-neededencodergroup=['10']
-neededdecodergroup=['21']
 
 #single get info smip info function
 '''
