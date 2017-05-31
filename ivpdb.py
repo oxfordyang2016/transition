@@ -1,4 +1,4 @@
-import MySQLdb,redis
+import MySQLdb,redis,ast,requests
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 db=MySQLdb.connect(host='192.168.0.112', user='root', passwd='123456',db="ivp")
 cursor=db.cursor()
