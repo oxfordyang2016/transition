@@ -6,12 +6,6 @@ from time import strftime
 
 
 app = Flask(__name__)
-#board group
-allencodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
-alldecodergroup=['6','13','14','20','21','30']
-tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
-neededencodergroup=['10']
-neededdecodergroup=['21']
 
 #single get info smip info function
 '''
@@ -236,9 +230,9 @@ def completelink(ivpid='test'):
             print('the corresponding decoder position')
             print(r.get(str(coivp)+'SMIP_In'+str(int(coge)-1)))
             #print('')
-        singleivpdevicelink.append({'stream'+str(count):{'encoder':info[0],\
-            'encodertype':info[1],'destinationsmip':r.get('stream'+str(count)+'settingip'),\
-            'destinationivp':str(coivp),'decoder':r.get(str(coivp)+'SMIP_In'+str(int(coge)-1))}})
+        singleivpdevicelink.append({'streamstatus':'running','stream'+str(count):[{'encoder':info[0],'ivpidstatus':'ok',
+            'encodertype':info[1],'encoderstatus':'ready','ge'+str(count)+'status':'ok'},{'destinationsmip':r.get('stream'+str(count)+'settingip'),\
+            'destinationivp':str(coivp),'destinationstatus':'ok','decoderstatus':'ok','decoder':r.get(str(coivp)+'SMIP_In'+str(int(coge)-1))}]})
         count+=1
     r.set(str(ivpid)+'streamgroup',singleivpdevicelink)
 

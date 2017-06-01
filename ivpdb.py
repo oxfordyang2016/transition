@@ -25,7 +25,10 @@ def getrow():
 def parserip(ivpid):
     cursor.execute("select * from infoofivp where ivpid= "+"'"+str(ivpid)+"'")
     registeredinfo=getrow()
-    ip=registeredinfo['0']['ip']
+    try:
+        ip=registeredinfo['0']['ip']
+    except:
+        ip=''
     print(ip)
     return ip
 
@@ -70,7 +73,8 @@ def allivpsboards():
     ivpidgroup=[allivp[i]['ivpid'] for i in allivp.keys()]
     print ivpidgroup
     #result0=readyboards(ip,allencodergroup,alldecodergroup)
-
+    
+    allivps=[]
     for k in ivpidgroup:
         ip=parserip(str(k))
         #result0=readyboards(str(ip),allencodergroup,alldecodergroup)
@@ -91,8 +95,13 @@ def allivpsboards():
 
         except:
             result1=['0','','']
+        try:    
+            allivp.append({'ivpid':k,'ip':ip,'slotlist':{'encodergroup':result1[1],'decodergroup':result[2]}})
+        except:
+            allivp.append({'ivpid':k,'ip':ip,'slotlist':'error'})
+
         print red('insert into deviceworkingboard (ivpid,encodergroup,decodergroup) values'+"("+"'"+str(k)+"'"+","+"'"+json.dumps(result1[1])+"'"+","+"'"+json.dumps(result1[2])+"'"+")")
         cursor.execute('insert into deviceworkingboard (ip,ivpid,encodergroup,decodergroup) values'+"("+"'"+str(ip)+"'"+","+"'"+k+"'"+","+"'"+json.dumps(result1[1])+"'"+","+"'"+json.dumps(result1[2])+"'"+")")        
         #cursor.execute("INSERT INTO infoofivp  (ivpid,ip,user,phone,addressofdevice) VALUES" +"("+"'"+str(registerivpid)+"'"+","+"'"+str(registerip)+"'"+","+"'"+str(registeruser)+"'"+","+"'"+str(registerphone)+"'"+","+"'"+str(registeraddress)+"'" +')')
 
-    
+    return allivps

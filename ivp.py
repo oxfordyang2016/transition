@@ -250,7 +250,7 @@ def singledevicedecoderinfo(ivpid='test'):
 
 
 
-@app.route('/ivps/allpos')
+@app.route('/ivps/allpos0531bechanged')
 def allpos(*args):
     cursor.execute('select allposandtype.ivpid,allposandstatus.ip,u1status,d1status ,u2status,d2status,u3status,d3status,u1type,d1type,u2type,d2type,u3type,d3type from allposandstatus,allposandtype where allposandstatus.ivpid=allposandtype.ivpid')
     allpos=getrow()
@@ -259,12 +259,66 @@ def allpos(*args):
     allposlist=[]
     for k in range(thenumberofivpid):
         allposlist.append({"id":allpos[str(k)]['ivpid'],"ip":allpos[str(k)]['ip'],"slot_list":[
-{"slot0":{'name':allpos[str(k)]['d1type'],'status':allpos[str(k)]['d1status']}},{"slot1":{'name':allpos[str(k)]['d2type'],'status':allpos[str(k)]['d2status']}},{"slot2":{'name':allpos[str(k)]['d3type'],'status':allpos[str(k)]['d3status']}},{"slot3":{'name':allpos[str(k)]['u1type'],'status':allpos[str(k)]['u1status']}},{"slot4":{'name':allpos[str(k)]['u2type'],'status':allpos[str(k)]['u2status']}},{"slot5":{'name':allpos[str(k)]['u3type'],'status':allpos[str(k)]['u3status']}}]})    
+{"slot0":{'name':allpos[str(k)]['d1type'],'status':allpos[str(k)]['d1status']}},\
+{"slot1":{'name':allpos[str(k)]['d2type'],'status':allpos[str(k)]['d2status']}},\
+{"slot2":{'name':allpos[str(k)]['d3type'],'status':allpos[str(k)]['d3status']}},\
+{"slot3":{'name':allpos[str(k)]['u1type'],'status':allpos[str(k)]['u1status']}},\
+{"slot4":{'name':allpos[str(k)]['u2type'],'status':allpos[str(k)]['u2status']}},\
+{"slot5":{'name':allpos[str(k)]['u3type'],'status':allpos[str(k)]['u3status']}}]})    
 
 
 
     result={'ivp_list':allposlist,'errorcode':0}
     return json.dumps(result)
+
+
+
+
+
+
+
+@app.route('/ivps/allpos')
+#0531 i use the new fucntion
+def allpofucks(ivpid='test'):
+    ivpidgroup=allivpdevice()
+    print ivpidgroup
+    allivpboardsgroup=[]
+    boardsgroup=['slot0','slot1','slot2','slot3','slot4','slot5','slot6']
+    for k in ivpidgroup:
+        ip=parserip(str(k))
+        url='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=boardmap'
+        try:
+            response=ast.literal_eval(requests.get(url).text)
+            slotgroup=response['Body']            
+            print type(slotgroup)
+        except:
+            response='no group info'
+            slotgroup=''
+        slots=[]
+        print yellow(str(slotgroup))
+        for slot in boardsgroup:
+            try:
+                slots.append({str(slot):{'name':slotgroup[str(slot)],'status':slotgroup[str(slot)+'_status']}})
+            except:
+                slots.append({str(slot):{'name':slot,'status':''}})
+
+        print red(str(slots))
+        allivpboardsgroup.append({'id':k,'ip':str(parserip(str(k))),'slotlist':slots})
+    
+    print(allivpboardsgroup)
+    return json.dumps({'errorcode':0,"ivplist":allivpboardsgroup})
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #lookup smip info
@@ -293,6 +347,26 @@ def getalllink():
     finalresult={'errorcode':'200','linklist':linklist}
     
     return json.dumps(finalresult)
+
+
+
+
+#lookup smip info
+@app.route('/ivps/singledevice')
+def singledevice(ivpid='test'):
+    if ivpid=='test':
+        ivpid = request.args.get('ivpid')
+    
+    encoderinfo=r.get()
+    decoderinfo=r.get()
+    smipinfo=r.get()
+    singledeviceallinfo=[coderinfo,decoderinfo,smipinfo]
+    result={'errorcode':200,allinfo:singledeviceallinfo}     
+    return json.dumps(singledeviceallinfo)
+
+
+
+
 
 
 

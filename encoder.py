@@ -6,19 +6,11 @@ from ivpdb import *
 from time import strftime 
 
 
-#board group
-allencodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
-alldecodergroup=['6','13','14','20','21','30']
-tmp='7 8  9 10 11 17 19 25 34 38 39 6 13 14 20 21 30'
+
 neededencodergroup=['10']
 neededdecodergroup=['21']
-apiversion='1.0'
 
-
-
-#Being ready group ofsingle device 
-
-    
+#Being ready group ofsingle device     
 #look all encoder info in single device//--------these requirements are implemented by mrs yao
 @app.route('/ivps/encoders')
 def singledeviceencoderinfo(ivpid='test'):
