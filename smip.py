@@ -230,9 +230,34 @@ def completelink(ivpid='test'):
             print('the corresponding decoder position')
             print(r.get(str(coivp)+'SMIP_In'+str(int(coge)-1)))
             #print('')
-        singleivpdevicelink.append({'streamstatus':'running','stream'+str(count):[{'encoder':info[0],'ivpidstatus':'ok',
-            'encodertype':info[1],'encoderstatus':'ready','ge'+str(count)+'status':'ok'},{'destinationsmip':r.get('stream'+str(count)+'settingip'),\
-            'destinationivp':str(coivp),'destinationstatus':'ok','decoderstatus':'ok','decoder':r.get(str(coivp)+'SMIP_In'+str(int(coge)-1))}]})
+        singleivpdevicelink.append({'status':'running','device_list':[{'ip':'ip','id':'ivpid',"board_list":[{'name':info[1],
+                                                                                                             'type':'encoder',
+                                                                                                              'status':'ready',
+                                                                                                              'position':info[0]},
+                                                                                                             {'name':'smip',
+                                                                                                              'ip':'192.168.1.211',
+                                                                                                              'type':'smiptx',
+                                                                                                              'position':'ge'+str(count),
+                                                                                                              'status':'ready'}
+                                                                                                            ]}
+                                                                       ,{'ip':'ip','id':'id','board_list':[{'ip':r.get('stream'+str(count)+'settingip'),\
+                                                                                                            'destinationivp':str(coivp),
+                                                                                                             'position':'ge'+str(coge),
+                                                                                                             'type':'smip',
+                                                                                                            'status':'ready'},
+                                                                                                           {'type':'decoder',
+                                                                                                            'position':'position',
+                                                                                                             'name':'name',
+                                                                                                             'status':'ok',
+                                                                                                             'decoder':r.get(str(coivp)+'SMIP_In'+str(int(coge)-1))}
+                                                                                                             ]
+                                                                         }
+
+]
+                                                                         
+
+
+})
         count+=1
     r.set(str(ivpid)+'streamgroup',singleivpdevicelink)
 

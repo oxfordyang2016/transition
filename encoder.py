@@ -84,11 +84,58 @@ def singledeviceencoderinfo(ivpid='test'):
     '''
 
 
+def allposfucks(ivpid='test'):
+    ivpidgroup=allivpdevice()
+    print ivpidgroup
+    allivpboardsgroup=[]
+    boardsgroup=['slot0','slot1','slot2','slot3','slot4','slot5','slot6']
+    for k in ivpidgroup:
+        ip=parserip(str(k))
+        url='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=boardmap'
+        try:
+            response=ast.literal_eval(requests.get(url).text)
+            slotgroup=response['Body']
+            print type(slotgroup)
+        except:
+            response='no group info'
+            slotgroup=''
+        slots=[]
+        print yellow(str(slotgroup))
+        for slot in boardsgroup:
+            try:
+                slots.append({str(slot):{'name':slotgroup[str(slot)],'status':slotgroup[str(slot)+'_status']}})
+            except:
+                #pass
+                slots.append({str(slot):{'name':'','status':''}})
+
+        print red(str(slots))
+        allivpboardsgroup.append({'id':k,'ip':str(parserip(str(k))),'slot_list':slots})
+   
+    print(allivpboardsgroup)
+    r.set('allivpboardsgroup',allivpboardsgroup)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 for k in range(10):
     singledeviceencoderinfo(ivpid='ivp201705170754')
     #singledevicedecoderinfo(ivpid='ivp201705170754')
     #getsmip1(ivpid='ivp201705170754')
-
+    allposfucks()
 
 
 

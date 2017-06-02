@@ -280,43 +280,13 @@ def allpos(*args):
 @app.route('/ivps/allpos')
 #0531 i use the new fucntion
 def allpofucks(ivpid='test'):
-    ivpidgroup=allivpdevice()
-    print ivpidgroup
-    allivpboardsgroup=[]
-    boardsgroup=['slot0','slot1','slot2','slot3','slot4','slot5','slot6']
-    for k in ivpidgroup:
-        ip=parserip(str(k))
-        url='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=boardmap'
-        try:
-            response=ast.literal_eval(requests.get(url).text)
-            slotgroup=response['Body']            
-            print type(slotgroup)
-        except:
-            response='no group info'
-            slotgroup=''
-        slots=[]
-        print yellow(str(slotgroup))
-        for slot in boardsgroup:
-            try:
-                slots.append({str(slot):{'name':slotgroup[str(slot)],'status':slotgroup[str(slot)+'_status']}})
-            except:
-                slots.append({str(slot):{'name':slot,'status':''}})
-
-        print red(str(slots))
-        allivpboardsgroup.append({'id':k,'ip':str(parserip(str(k))),'slotlist':slots})
-    
+    allivpboardsgroup=r.get('allivpboardsgroup')
+    allivpboardsgroup=ast.literal_eval(allivpboardsgroup)
     print(allivpboardsgroup)
-    return json.dumps({'errorcode':0,"ivplist":allivpboardsgroup})
+    return json.dumps({'errorcode':0,"ivp_list":allivpboardsgroup})
 
 
-
-
-
-
-
-
-
-
+testdata={"errorcode": "200", "linklist": [{"status": "running", "device_list": [{"ip": "192.168.0211", "id": "ivpid20170601", "board_list": [{"status": "ready", "position": "slot3", "type": "encoder", "name": "HDE_In1"}, {"status": "ready", "ip": "192.168.1.211", "type": "smiptx", "name": "smip", "position": "ge1"}]}, {"ip": "192.168.1.23", "id": "ivpid2017088", "board_list": [{"status": "ready", "ip": "192.168.0.160", "destinationivp": "ivp201705170754", "type": "smip", "position": "ge3"}, {"status": "ok", "position": "slot4", "type": "decoder", "name": "name"}]}]}, {"status": "running", "device_list": [{"ip": "ip", "id": "ivpid", "board_list": [{"status": "ready", "position": "mux", "type": "encoder", "name": "MUX1_Out"}, {"status": "ready", "ip": "192.168.1.211", "type": "smiptx", "name": "smip", "position": "ge2"}]}, {"ip": "ip", "id": "id", "board_list": [{"status": "ready", "ip": "192.168.1.211", "destinationivp": "ivp201705170754", "type": "smip", "position": "ge4"}, {"status": "ok", "position": "position", "type": "decoder", "name": "name", "decoder": "slot4"}]}]}, {"status": "running", "device_list": [{"ip": "ip", "id": "ivpid", "board_list": [{"status": "ready", "position": "mux", "type": "encoder", "name": "MUX1_Out"}, {"status": "ready", "ip": "192.168.1.211", "type": "smiptx", "name": "smip", "position": "ge3"}]}, {"ip": "ip", "id": "id", "board_list": [{"status": "ready", "ip": "192.168.0.160", "destinationivp": "ivp201705170754", "type": "smip", "position": "ge3"}, {"status": "ok", "position": "position", "type": "decoder", "name": "name"}]}]}]}
 
 
 
@@ -340,14 +310,18 @@ def getalllink():
         try:
             singleivplink=r.get(str(k)+'streamgroup')
             result=ast.literal_eval(singleivplink)
-            linklist.append({k:result})
+            #linklist.append({k:result})
+            print yellow(str(result))
+            for linknumber in range(len(result)):
+                linklist.append(result[linknumber])  
         except:
-            linklist.append({k:''})
-    
+            #linklist.append({k:''})
+            #linklist.append('')
+            pass
     finalresult={'errorcode':'200','linklist':linklist}
     
-    return json.dumps(finalresult)
-
+    #return json.dumps(finalresult)
+    return json.dumps(testdata)
 
 
 
