@@ -52,6 +52,7 @@ def getsmipge(ivpid,ge):
     print(st0)
     print(red(str(type(st0))))    
     #you need to set the bufftime mechinism
+    r.set(str(ivpid)+'ge'+str(ge)+'streamstatus',st0['msg'])
     '''
     stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],
                'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],
@@ -213,6 +214,11 @@ def completelink(ivpid='test'):
             info=ast.literal_eval(k['stream'+str(count)])
         except:
             print('thers is a bug')
+        try:
+            streamstatus=r.get(str(ivpid)+'ge'+str(count-1)+'streamstatus')
+        except:
+            streamstatus='Not work'
+        #print(yellow(streamstatus))
         if info!=None:
             print('this stream'+str(count)+' encoder is the fellowing')
             print(info[0])
@@ -224,7 +230,10 @@ def completelink(ivpid='test'):
             ip=r.get('stream'+str(count)+'settingip')
             print('this stream desitination rx in fellowing deice')
             destination=accrodingtoiptogetivp(str(ip))
-            coivp,coge=destination[0],destination[1]
+            try:
+                coivp,coge=destination[0],destination[1]
+            except:
+                coivp,coge='device problem','20000'
             print('the destination ivp is '+str(coivp))
             print('this device corresponding ge is ge'+str(coge))
             print('the corresponding decoder position')
