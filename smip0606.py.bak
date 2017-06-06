@@ -148,8 +148,7 @@ def singleivpsmipipsettinggroup(ivpid):
     return ipgroup
 
 def accrodingtoiptogetivp(ip):
-    #ivpgroup=['ivp201705170754']
-    ivpgroup=allivpdevice()
+    ivpgroup=['ivp201705170754']
     ivpsmipsettingipgroup={}
     for ivpid in ivpgroup:
         ivpsmipsettingipgroup[str(ivpid)]=singleivpsmipipsettinggroup(ivpid)
@@ -169,47 +168,42 @@ def accrodingtoiptogetivp(ip):
 def completelink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
-    singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(4) ]
-    yangtest.position()
-    print yellow(str(singlesmipgroup))
-    yangtest.position()    
+    singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(3) ]
+    
     count=1
     singleivpdevicelink=[]
-    try:    
-        for k in singlesmipgroup:
-            print yellow('the curent device is '+str(ivpid)+'****')
-            try:
-                info=ast.literal_eval(k['stream'+str(count)])
-            except:
-                print('thers is a bug')
-                #r.set(str(ivpid)+'streamgroup',[])
-                #return 
-            try:
-                streamstatus=r.get(str(ivpid)+'ge'+str(count-1)+'streamstatus')
-            except:
-                streamstatus='Not work'
-            #print(yellow(streamstatus))
-            if info!=None:
-                print('this stream'+str(count)+' encoder is the fellowing')
-                print(info[0])
-                print('this stream encoder type is')
-                print(info[1])
-                print('this stream distination rx smip ip is')
-                print(r.get('stream'+str(count)+'settingip'))
+    for k in singlesmipgroup:
+        print yellow('the curent device is '+str(ivpid)+'****')
+        try:
+            info=ast.literal_eval(k['stream'+str(count)])
+        except:
+            print('thers is a bug')
+        try:
+            streamstatus=r.get(str(ivpid)+'ge'+str(count-1)+'streamstatus')
+        except:
+            streamstatus='Not work'
+        #print(yellow(streamstatus))
+        if info!=None:
+            print('this stream'+str(count)+' encoder is the fellowing')
+            print(info[0])
+            print('this stream encoder type is')
+            print(info[1])
+            print('this stream distination rx smip ip is')
+            print(r.get('stream'+str(count)+'settingip'))
             
-                ip=r.get('stream'+str(count)+'settingip')
-                print('this stream desitination rx in fellowing deice')
-                destination=accrodingtoiptogetivp(str(ip))
-                try:
-                    coivp,coge=destination[0],destination[1]
-                except:
-                    coivp,coge='device problem','20000'
-                print('the destination ivp is '+str(coivp))
-                print('this device corresponding ge is ge'+str(coge))
-                print('the corresponding decoder position')
-                print(r.get(str(coivp)+'SMIP_In'+str(int(coge)-1)))
-                #print('')
-                singleivpdevicelink.append({'status':'running','device_list':[{'ip':'ip','id':'ivpid',"board_list":[{'name':info[1],
+            ip=r.get('stream'+str(count)+'settingip')
+            print('this stream desitination rx in fellowing deice')
+            destination=accrodingtoiptogetivp(str(ip))
+            try:
+                coivp,coge=destination[0],destination[1]
+            except:
+                coivp,coge='device problem','20000'
+            print('the destination ivp is '+str(coivp))
+            print('this device corresponding ge is ge'+str(coge))
+            print('the corresponding decoder position')
+            print(r.get(str(coivp)+'SMIP_In'+str(int(coge)-1)))
+            #print('')
+        singleivpdevicelink.append({'status':'running','device_list':[{'ip':'ip','id':'ivpid',"board_list":[{'name':info[1],
                                                                                                              'type':'encoder',
                                                                                                               'status':'ready',
                                                                                                               'position':info[0]},
@@ -237,12 +231,8 @@ def completelink(ivpid='test'):
 
 
 })
-            count+=1
-            print yellow(str(singleivpdevicelink))
-            r.set(str(ivpid)+'streamgroup',singleivpdevicelink)
-    except:
-        r.set(str(ivpid)+'streamgroup',[])
-
+        count+=1
+    r.set(str(ivpid)+'streamgroup',singleivpdevicelink)
 
 
 
@@ -255,7 +245,7 @@ for k in range(1):
     getsmip1(ivpid='ivp201705232247')
     getlink(ivpid='ivp201705232247')
     completelink(ivpid='ivp201705170754')
-    completelink(ivpid='ivp201705232247')
+    #completelink(ivpid='ivp201705232247')
 
 
 

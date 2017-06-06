@@ -320,8 +320,8 @@ def getalllink():
             pass
     finalresult={'errorcode':'200','linklist':linklist}
     
-    #return json.dumps(finalresult)
-    return json.dumps(testdata)
+    return json.dumps(finalresult)
+    #return json.dumps(testdata)
 
 
 
