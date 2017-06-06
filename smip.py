@@ -1,6 +1,6 @@
 from colors import red, green, blue,yellow
 from flask import Flask,request
-import requests,json,ast
+import requests,json,ast,yangtest
 from  ivpdb  import *
 from time import strftime 
 
@@ -13,11 +13,15 @@ getsmipge('192.168,201',3)
 '''
 def getsmipge(ivpid,ge):
     ip=parserip(str(ivpid))
-    smipinfo0=requests.get('http://'+str(ip)+\
+    try:
+        smipinfo0=requests.get('http://'+str(ip)+\
         '/cgi-bin/boardcontroller.cgi?action=get&object=slot6&key=channel_status&instanceID='+str(ge)).text
-    smipinfo1=requests.get('http://'+str(ip)+\
+        smipinfo1=requests.get('http://'+str(ip)+\
         '/cgi-bin/boardcontroller.cgi?action=get&object=slot6&key=ip_profile&instanceID='+str(ge)).text
-    
+    except:
+        yangtest.position()
+        print 'comunication error'
+        return 'communication error'
     
     print yellow(smipinfo0)
     smipinfo0,smipinfo1=ast.literal_eval(smipinfo0),ast.literal_eval(smipinfo1)
@@ -114,19 +118,22 @@ def getsmip1(ivpid='test'):
 def getlink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
-    ip=parserip(str(ivpid))    
-    stream1=requests.get('http://'+str(ip)+\
+    ip=parserip(str(ivpid))
+    try:    
+        stream1=requests.get('http://'+str(ip)+\
         '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out0').text
-    stream2=requests.get('http://'+str(ip)+\
+        stream2=requests.get('http://'+str(ip)+\
         '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out1').text
-    stream3=requests.get('http://'+str(ip)+\
+        stream3=requests.get('http://'+str(ip)+\
         '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out2').text
-    stream4=requests.get('http://'+str(ip)+\
+        stream4=requests.get('http://'+str(ip)+\
         '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out3').text
-    st1=ast.literal_eval(stream1)
-    st2=ast.literal_eval(stream2)
-    st3=ast.literal_eval(stream3)
-    st4=ast.literal_eval(stream4)
+        st1=ast.literal_eval(stream1)
+        st2=ast.literal_eval(stream2)
+        st3=ast.literal_eval(stream3)
+        st4=ast.literal_eval(stream4)
+    except:
+        print 'stream error'
     try:
         if st1['Body']['Route_records']!=[]:
             r.set(str(ivpid)+'stream1source',\
@@ -199,7 +206,6 @@ def completelink(ivpid='test'):
             info=ast.literal_eval(k['stream'+str(count)])
         except:
             print('thers is a bug')
-
         try:
             streamstatus=r.get(str(ivpid)+'ge'+str(count-1)+'streamstatus')
         except:
@@ -258,14 +264,21 @@ def completelink(ivpid='test'):
 
 
 
-
+alldevice=allivpdevice()
 
 
 for k in range(1):
-    #getsmip1(ivpid='ivp201705170754')
-    #getlink(ivpid='ivp201705170754')
+    getsmip1(ivpid='ivp201705170754')
+    getlink(ivpid='ivp201705170754')
+    getsmip1(ivpid='ivp201705232247')
+    getlink(ivpid='ivp201705232247')
     completelink(ivpid='ivp201705170754')
-    completelink(ivpid='ivp201705232247')
+    #completelink(ivpid='ivp201705232247')
+
+
+
+
+print alldevice
 
 #ivp201705232247
 if __name__ == '__main__':
