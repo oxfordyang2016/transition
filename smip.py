@@ -19,15 +19,11 @@ def getsmipge(ivpid,ge):
         '/cgi-bin/boardcontroller.cgi?action=get&object=slot6&key=ip_profile&instanceID='+str(ge)).text
     
     
-    print(green('i  dnnot =====================understand what happen?'))    
     print yellow(smipinfo0)
     smipinfo0,smipinfo1=ast.literal_eval(smipinfo0),ast.literal_eval(smipinfo1)
     key0=smipinfo0['Body']['channel_status']
-    print(yellow('i  dnnot =====================understand what happen?'))
     print key0
-    print(green('i donnot understand what happen=========================>'))
     try:
-        print('============================================>'+str(key0))
         st0=ast.literal_eval(key0)
         #st0=key0
         print('i will print---st0 in try-------------------------> '+str(st0))
@@ -194,18 +190,7 @@ def completelink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
     singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(3) ]
-    '''
-    for k in range(4):
-        singlesmipgroup.append(ast.literal_eval(r.get(str(ivpid)+'stream'+str(k+1)+'source')))
-    for k in singlesmipgroup:
-        if k!='':
-            print('this stream encoder is the fellowing')
-            print (k[0])
-            print('this stream encoder type is')
-            print(k[1])
-            print('this stream distination rx smip is')
-            print(r.get(stream1settingip))
-    '''
+    
     count=1
     singleivpdevicelink=[]
     for k in singlesmipgroup:
@@ -214,6 +199,7 @@ def completelink(ivpid='test'):
             info=ast.literal_eval(k['stream'+str(count)])
         except:
             print('thers is a bug')
+
         try:
             streamstatus=r.get(str(ivpid)+'ge'+str(count-1)+'streamstatus')
         except:
@@ -276,12 +262,12 @@ def completelink(ivpid='test'):
 
 
 for k in range(1):
-    getsmip1(ivpid='ivp201705170754')
-    getlink(ivpid='ivp201705170754')
+    #getsmip1(ivpid='ivp201705170754')
+    #getlink(ivpid='ivp201705170754')
     completelink(ivpid='ivp201705170754')
+    completelink(ivpid='ivp201705232247')
 
-
-
+#ivp201705232247
 if __name__ == '__main__':
    app.run('0.0.0.0',70,debug='True')
 

@@ -1,5 +1,5 @@
 from ivpdb import *
-import requests
+import requests,os
 from colors import *
 import ast
 
@@ -21,40 +21,48 @@ def getwarn(ivpid):
 
 
 
+def getmainboardinfo(ivpid):
+    #http://192.168.0.181/cgi-bin/system.cgi?action=get&object=status&key=all
+    ip=parserip(ivpid)
+    query='http://'+str(ip)+'/cgi-bin/system.cgi?action=get&object=status&key=all'
+    result=ast.literal_eval(requests.get(query).text)
+    return result
 
 
 
 
 
 
+def check_ping(ivpid='test',ip='test'):
+    if ivpid!='test':
+        ip=parserip(ivpid)
+    
+    hostname = ip
+    response = os.system("ping -c 1 " + hostname)
+    # and then check the response...
+    if response == 0:
+        pingstatus = "Network Active"
+    else:
+        pingstatus = "Network Error"
+
+    return pingstatus
 
 
 
 
 
+def pinghost(ivpid):
+    hostname=parserip(ivpid)
+    response = os.system("ping -c 1 " + hostname)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    #anthen check the response...
+    if response == 0:
+        print hostname, 'is up!'
+        result='reachable'
+    else:
+        print hostname, 'is down!'
+        result='unreachable'
+    return result
+    
 
 
