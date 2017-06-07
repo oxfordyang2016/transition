@@ -41,12 +41,28 @@ def check_ping(ivpid='test',ip='test'):
     response = os.system("ping -c 1 " + hostname)
     # and then check the response...
     if response == 0:
-        pingstatus = "ok"
+        pingstatus = "Network Active"
     else:
-        pingstatus = "error"
+        pingstatus = "Network Error"
 
     return pingstatus
 
 
+
+
+
+def pinghost(ivpid):
+    hostname=parserip(ivpid)
+    response = os.system("ping -c 1 " + hostname)
+
+    #anthen check the response...
+    if response == 0:
+        print hostname, 'is up!'
+        result='ok'
+    else:
+        print hostname, 'is down!'
+        result='no'
+    return result
+    
 
 
