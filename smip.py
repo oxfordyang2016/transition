@@ -176,7 +176,7 @@ def singleivpsmipipsettinggroup(ivpid):
     return ipgroup
 
 def accrodingtoiptogetivp(ip):
-    ivpgroup=['ivp201705170754']
+    ivpgroup=allivpdevice()
     ivpsmipsettingipgroup={}
     for ivpid in ivpgroup:
         ivpsmipsettingipgroup[str(ivpid)]=singleivpsmipipsettinggroup(ivpid)
