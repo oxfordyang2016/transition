@@ -1,4 +1,5 @@
 from  colors  import *
+from time import strftime 
 from flask import Flask,request
 import MySQLdb,redis,ast,requests,yangtest,json
 r = redis.StrictRedis(host='localhost', port=6379, db=0)

@@ -1,6 +1,7 @@
 from  ivpdb  import *
 app = Flask(__name__)
 
+
 #single get info smip info function
 '''
 getsmipge('192.168,201',3)
@@ -15,7 +16,7 @@ def getsmipge(ivpid,ge):
     except:
         yangtest.position()
         print  'comunication error'
-        return 'communication error'
+        return {'alarm':'1','smip-stream'+str(ge):'','smipgessetting'+str(ge):''}
     
     smipinfo0,smipinfo1=ast.literal_eval(smipinfo0),ast.literal_eval(smipinfo1)
     key0=smipinfo0['Body']['channel_status']
@@ -23,14 +24,12 @@ def getsmipge(ivpid,ge):
         st0=ast.literal_eval(key0)
         st1=ast.literal_eval(st0['i'])
         st2=st1['orr']
-        st3=st0
         st0=st1
     except:
         st0=(ast.literal_eval(key0))
         st1=ast.literal_eval(st0['o'])
         print(st1)
         st2=st1['orr']
-        st3=st0
         st0=st1
    
     r.set(str(ivpid)+'ge'+str(ge)+'streamstatus',st0['msg'])
@@ -39,44 +38,20 @@ def getsmipge(ivpid,ge):
     key1=smipinfo1['Body']
     net0=key1
     net1=ast.literal_eval(net0['ip_profile'])
-    geinfo={'Network setting':{'work mode':net1['ipmode'],'mask':net1['mask'],'gateway':net1['ge'],'ip':net1['ad']},'phy configuration':{'an':net1["an"],'phy speed':net1['spddup'],'status':net1['s']}}
+    geinfo={'Network setting':{'work mode':net1['ipmode'],'mask':net1['mask'],\
+            'gateway':net1['ge'],'ip':net1['ad']},'phy configuration':{'an':net1["an"],\
+            'phy speed':net1['spddup'],'status':net1['s']}}
     r.set(str(ivpid)+'smipge'+str(ge+1)+'ip',net1['ad'])
     infogroup={'smip-stream'+str(ge):stream,'smipgessetting'+str(ge):geinfo}    
     return infogroup
 
 
 
-
-#test yangming
-#lookup smip info in function 
-@app.route('/smipfunction')
-def getsmip1(ivpid='test'):
-    if ivpid=='test':
-        ivpid = request.args.get('ivpid')
-    ip=parserip(str(ivpid))
-    try:
-        info1=getsmipge(ivpid,0)
-    except:
-        info1='the info of ge1 does not exist '
-    try:
-        info2=getsmipge(ivpid,1)
-    except:
-        info2='the info if ge2 does not exsit'
-
-    try:    
-        info3=getsmipge(ivpid,2)
-    except:
-        info3='the info of ge3 does not exsit'
-
-    try:    
-        info4=getsmipge(ivpid,3)
-    except:
-        info4='the info of ge4  does not exsit'
-
-    allinfo={'info1':info1,'info2':info2,'info3':info3,'info4':info4}
-    print red(str(allinfo))
+def getsmip(ivpid):
+    allinfo={}
+    for k in range(4):
+        allinfo['info'+str(k+1)]=getsmipge(ivpid,k)
     r.set(str(ivpid)+'smipinfo',allinfo)
-    return json.dumps(allinfo)
 
 
 
@@ -244,9 +219,9 @@ alldevice=allivpdevice()
 
 
 for k in range(1):
-    getsmip1(ivpid='ivp201705170754')
+    getsmip(ivpid='ivp201705170754')
     getlink(ivpid='ivp201705170754')
-    getsmip1(ivpid='ivp201705232247')
+    getsmip(ivpid='ivp201705232247')
     getlink(ivpid='ivp201705232247')
     completelink(ivpid='ivp201705170754')
     completelink(ivpid='ivp201705232247')

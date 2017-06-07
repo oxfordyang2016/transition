@@ -1,12 +1,7 @@
-from colors import red, green, blue,yellow
-from flask import Flask,request
-from colors import *
-from flask import Flask,request
+
 app = Flask(__name__)
-import requests,json,ast,yangtest
-from time import strftime 
 from ivpdb import *
-import ast
+
 
 #board group
 allencodergroup=['7','8','9','10','11','17','19','25','34' ,'38','39' ]
