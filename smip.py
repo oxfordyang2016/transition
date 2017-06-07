@@ -131,6 +131,9 @@ def accrodingtoiptogetivp(ip):
 def completelink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
+    pingstatus=pinghost(ivpid)
+    if pingstatus=='no':
+        return
     singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(4) ]
     yangtest.position()
     print yellow(str(singlesmipgroup))
