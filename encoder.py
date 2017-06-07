@@ -1,10 +1,5 @@
-from colors import *
-from flask import Flask,request
-app = Flask(__name__)
-import requests,json,ast
 from ivpdb import *
-from time import strftime 
-
+app = Flask(__name__)
 
 
 neededencodergroup=['10']

@@ -1,4 +1,6 @@
-import MySQLdb,redis,ast,requests,yangtest
+from  colors  import *
+from flask import Flask,request
+import MySQLdb,redis,ast,requests,yangtest,json
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 db=MySQLdb.connect(host='192.168.0.112', user='root', passwd='123456',db="ivp")
 cursor=db.cursor()
