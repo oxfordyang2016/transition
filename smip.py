@@ -2,10 +2,7 @@ from  ivpdb  import *
 app = Flask(__name__)
 
 
-#single get info smip info function
-'''
-getsmipge('192.168,201',3)
-'''
+#get smip phy and stream setting info
 def getsmipge(ivpid,ge):
     ip=parserip(str(ivpid))
     try:
@@ -14,34 +11,26 @@ def getsmipge(ivpid,ge):
         smipinfo1=requests.get('http://'+str(ip)+\
         '/cgi-bin/boardcontroller.cgi?action=get&object=slot6&key=ip_profile&instanceID='+str(ge)).text
     except:
-        yangtest.position()
-        print  'comunication error'
         return {'alarm':'communicte error','smip-stream'+str(ge):'','smipgessetting'+str(ge):''}
     try:
         smipinfo0,smipinfo1=ast.literal_eval(smipinfo0),ast.literal_eval(smipinfo1)
         print blue(str(smipinfo1))
-        key1=smipinfo1['Body']
+        net0=key1=smipinfo1['Body']
         key0=smipinfo0['Body']['channel_status']
     except:
         return {'alarm':'smip set error','smip-stream'+str(ge):'','smipgessetting'+str(ge):''}
-    
-    print yellow(key0)
     try:
         st0=ast.literal_eval(key0)
         st1=ast.literal_eval(st0['i'])
         st2=st1['orr']
-        st0=st1
     except:
         st0=(ast.literal_eval(key0))
         st1=ast.literal_eval(st0['o'])
-        print(st1)
         st2=st1['orr']
-        st0=st1
    
-    r.set(str(ivpid)+'ge'+str(ge)+'streamstatus',st0['msg'])
-    stream={'stream'+str(ge+1)+'settingip':st0['ipaddress']}
-    r.set(str(ivpid)+'stream'+str(ge+1)+'settingip',st0['ipaddress'])
-    net0=key1
+    r.set(str(ivpid)+'ge'+str(ge)+'streamstatus',st1['msg'])
+    stream={'stream'+str(ge+1)+'settingip':st1['ipaddress']}
+    r.set(str(ivpid)+'stream'+str(ge+1)+'settingip',st1['ipaddress'])
     net1=ast.literal_eval(net0['ip_profile'])
     geinfo={'Network setting':{'work mode':net1['ipmode'],'mask':net1['mask'],\
             'gateway':net1['ge'],'ip':net1['ad']},'phy configuration':{'an':net1["an"],\
@@ -60,6 +49,8 @@ def getsmip(ivpid):
 
 
 
+
+#get every device smip stream source 
 @app.route('/link')
 def getlink(ivpid='test'):
     if ivpid=='test':
@@ -74,10 +65,7 @@ def getlink(ivpid='test'):
         '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out2').text
         stream4=requests.get('http://'+str(ip)+\
         '/cgi-bin/boardcontroller.cgi?action=get&object=router&slotid=slot6&slotport=SMIP_Out3').text
-        st1=ast.literal_eval(stream1)
-        st2=ast.literal_eval(stream2)
-        st3=ast.literal_eval(stream3)
-        st4=ast.literal_eval(stream4)
+        st1,st2,st3,st4=ast.literal_eval(stream1),ast.literal_eval(stream2),ast.literal_eval(stream3),ast.literal_eval(stream4)
     except:
         print 'stream error'
     try:
