@@ -1,4 +1,10 @@
+from colors import red, green, blue,yellow
+from flask import Flask,request
+import requests,json,ast,yangtest
 from  ivpdb  import *
+from time import strftime 
+
+
 app = Flask(__name__)
 
 #single get info smip info function
@@ -14,7 +20,7 @@ def getsmipge(ivpid,ge):
         '/cgi-bin/boardcontroller.cgi?action=get&object=slot6&key=ip_profile&instanceID='+str(ge)).text
     except:
         yangtest.position()
-        print  'comunication error'
+        print 'comunication error'
         return 'communication error'
     
     smipinfo0,smipinfo1=ast.literal_eval(smipinfo0),ast.literal_eval(smipinfo1)
@@ -142,10 +148,7 @@ def singleivpsmipipsettinggroup(ivpid):
     return ipgroup
 
 def accrodingtoiptogetivp(ip):
-<<<<<<< HEAD
-=======
     #ivpgroup=['ivp201705170754']
->>>>>>> d4d6d2d999bbf6f12024150d05c140e8656902b2
     ivpgroup=allivpdevice()
     ivpsmipsettingipgroup={}
     for ivpid in ivpgroup:
