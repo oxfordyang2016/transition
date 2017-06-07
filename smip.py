@@ -16,10 +16,16 @@ def getsmipge(ivpid,ge):
     except:
         yangtest.position()
         print  'comunication error'
-        return {'alarm':'1','smip-stream'+str(ge):'','smipgessetting'+str(ge):''}
+        return {'alarm':'communicte error','smip-stream'+str(ge):'','smipgessetting'+str(ge):''}
+    try:
+        smipinfo0,smipinfo1=ast.literal_eval(smipinfo0),ast.literal_eval(smipinfo1)
+        print blue(str(smipinfo1))
+        key1=smipinfo1['Body']
+        key0=smipinfo0['Body']['channel_status']
+    except:
+        return {'alarm':'smip set error','smip-stream'+str(ge):'','smipgessetting'+str(ge):''}
     
-    smipinfo0,smipinfo1=ast.literal_eval(smipinfo0),ast.literal_eval(smipinfo1)
-    key0=smipinfo0['Body']['channel_status']
+    print yellow(key0)
     try:
         st0=ast.literal_eval(key0)
         st1=ast.literal_eval(st0['i'])
@@ -35,7 +41,6 @@ def getsmipge(ivpid,ge):
     r.set(str(ivpid)+'ge'+str(ge)+'streamstatus',st0['msg'])
     stream={'stream'+str(ge+1)+'settingip':st0['ipaddress']}
     r.set(str(ivpid)+'stream'+str(ge+1)+'settingip',st0['ipaddress'])
-    key1=smipinfo1['Body']
     net0=key1
     net1=ast.literal_eval(net0['ip_profile'])
     geinfo={'Network setting':{'work mode':net1['ipmode'],'mask':net1['mask'],\
