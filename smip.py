@@ -164,11 +164,13 @@ def accoringiptogetsmiprx(ip):
 def completelink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
-    singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(4) ]
+    #singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(4) ]
     singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(4) if r.get(str(ivpid)+'stream'+str(k+1)+'mode')=='send' ]
-    yangtest.position()
+    #singlesmipgroup=[k+1 for k in range(4) if r.get(str(ivpid)+'stream'+str(k+1)+'mode')=='send'] 
+    #yangtest.position()
     deviceip=parserip(ivpid)
-    #print yellow(str(singlesmipgroup))
+    yangtest.dividingline()
+    print yellow(str(singlesmipgroup))
     count=1
     singleivpdevicelink=[]
     try:    
@@ -178,6 +180,7 @@ def completelink(ivpid='test'):
             print yellow('the curent device is '+str(ivpid)+'****')
             try:
                 info=ast.literal_eval(k['stream'+str(count)])
+          
             except:
                 print('thers is a bug')
                 #r.set(str(ivpid)+'streamgroup',[])
@@ -262,11 +265,11 @@ def completelink(ivpid='test'):
                                                                        ,{'ip':receivingdeviceip,'id':des11[0],'board_list':[{'ip':r.get('stream'+str(count)+'settingip'),\
                                                                                                             'destinationivp':str(coivp),
                                                                                                              'position':'ge'+str(coge),
-                                                                                                             'type':'smip',
+                                                                                                             'type':'smiprx',
                                                                                                             'status':'ready'},
                                                                                                            {'type':'decoder',
                                                                                                             'position':'position',
-                                                                                                             'name':'name',
+                                                                                                             'name':'',
                                                                                                              'status':'ok',
                                                                                                              'decoder':r.get(str(coivp)+'SMIP_In'+str(int(coge)-1))}
                                                                                                              ]
@@ -311,8 +314,15 @@ def completelink(ivpid='test'):
 
 
 alldevice=allivpdevice()
+for ivpid in alldevice:
+    getsmip(ivpid)
+    getlink(ivpid)
+    completelink(ivpid)
 
 
+
+
+'''
 for k in range(1):
     getsmip(ivpid='ivp201705170754')
     getlink(ivpid='ivp201705170754')
@@ -320,7 +330,7 @@ for k in range(1):
     getlink(ivpid='ivp201705232247')
     completelink(ivpid='ivp201705170754')
     completelink(ivpid='ivp201705232247')
-
+'''
 
 des=ivpdb.accoringiptogetsmiprx('192.168.0.160')
 print des
