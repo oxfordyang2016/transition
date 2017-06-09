@@ -84,6 +84,7 @@ def allposfucks(ivpid='test'):
     print ivpidgroup
     allivpboardsgroup=[]
     boardsgroup=['slot0','slot1','slot2','slot3','slot4','slot5','slot6']
+    namedict={'10':'HDE','9':'HDE','21':'HDO','13':'DDO','28':'SMIP','52':'SMIP-C5'}
     for k in ivpidgroup:
         ip=parserip(str(k))
         url='http://'+str(ip)+'/cgi-bin/boardcontroller.cgi?action=get&object=boardmap'
@@ -98,7 +99,7 @@ def allposfucks(ivpid='test'):
         print yellow(str(slotgroup))
         for slot in boardsgroup:
             try:
-                slots.append({str(slot):{'name':slotgroup[str(slot)],'status':slotgroup[str(slot)+'_status']}})
+                slots.append({str(slot):{'name':namedict[str(slotgroup[str(slot)])],'status':slotgroup[str(slot)+'_status']}})
             except:
                 #pass
                 slots.append({str(slot):{'name':'','status':''}})

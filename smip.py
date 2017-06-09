@@ -1,4 +1,6 @@
+import ivpdb
 from  ivpdb  import *
+import yangtest
 app = Flask(__name__)
 
 
@@ -22,12 +24,22 @@ def getsmipge(ivpid,ge):
     try:
         st0=ast.literal_eval(key0)
         st1=ast.literal_eval(st0['i'])
+        r.set(str(ivpid)+'stream'+str(ge+1)+'mode','receive')
         st2=st1['orr']
     except:
         st0=(ast.literal_eval(key0))
+        
         st1=ast.literal_eval(st0['o'])
+        r.set(str(ivpid)+'stream'+str(ge+1)+'mode','send')
         st2=st1['orr']
-   
+    '''
+    stream={'stream buffertime':"st0['bf']",'stream-setting':{'orr':st0['orr'],'rrar':st0['rrar'],
+               'ip':st0['ipaddress'],'port':st0['ipport'],'setting-status':st0['msg'],
+               'disconnect':st0['off_t'],'source':st0['source'],
+
+                      'ge':st3['ge'],'mode':st0['status']}}
+    '''    
+    yangtest.yangshow(str(ivpid)+'status mode===>'+str(st1['status'])) 
     r.set(str(ivpid)+'ge'+str(ge)+'streamstatus',st1['msg'])
     stream={'stream'+str(ge+1)+'settingip':st1['ipaddress']}
     r.set(str(ivpid)+'stream'+str(ge+1)+'settingip',st1['ipaddress'])
@@ -126,22 +138,43 @@ def accrodingtoiptogetivp(ip):
             return [key,str(str(ivpsmipsettingipgroup[str(key)].index(str(ip))+1))]
 
 
+'''
+def accoringiptogetsmiprx(ip):
+    ivpgroup=allivpdevice()
+    for ivpid in ivpgroup:
+        try:
+            for k in range(4):
+                if r.get(str(ivpid)+'smipge'+str(k+1)+'ip')==ip:
+                    if r.get(str(ivpid)+'stream'+str(k+1)+'mode')=='receive':
+                        return [ivpid,'ge'+str(k+1)]
+        except:
+            pass
+
+'''
+
+
+
+
+
+
+
+
 
 #what is wrong
 def completelink(ivpid='test'):
     if ivpid=='test':
         ivpid=request.args.get('ivpid')
-    pingstatus=pinghost(ivpid)
-    if pingstatus=='no':
-        return
     singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(4) ]
+    singlesmipgroup=[{'stream'+str(k+1):r.get(str(ivpid)+'stream'+str(k+1)+'source')} for k in range(4) if r.get(str(ivpid)+'stream'+str(k+1)+'mode')=='send' ]
     yangtest.position()
-    print yellow(str(singlesmipgroup))
-    yangtest.position()    
+    deviceip=parserip(ivpid)
+    #print yellow(str(singlesmipgroup))
     count=1
     singleivpdevicelink=[]
     try:    
         for k in singlesmipgroup:
+            yangtest.dividingline()
+            print blue(str(singlesmipgroup))
             print yellow('the curent device is '+str(ivpid)+'****')
             try:
                 info=ast.literal_eval(k['stream'+str(count)])
@@ -159,32 +192,74 @@ def completelink(ivpid='test'):
                 print(info[0])
                 print('this stream encoder type is')
                 print(info[1])
+                print('the smip tx ip is the fellowing')
+                print(r.get(str(ivpid)+'smipge'+str(count)+'ip'))
+                smiptxip=r.get(str(ivpid)+'smipge'+str(count)+'ip')
                 print('this stream distination rx smip ip is')
-                print(r.get('stream'+str(count)+'settingip'))
+                print(r.get(str(ivpid)+'stream'+str(count)+'settingip'))
             
-                ip=r.get('stream'+str(count)+'settingip')
-                print('this stream desitination rx in fellowing deice')
-                destination=accrodingtoiptogetivp(str(ip))
+                rxip=r.get(str(ivpid)+'stream'+str(count)+'settingip')
+                print rxip
+                #yangshow(ip)
+                des11=ivpdb.accoringiptogetsmiprx(rxip)
+                print des11
+                #ivpdb.yangshow(des11)
+                #des=accoringiptogetsmiprx(ip)
+                #yangtest.position()
+                #yangtest.yangshow(str(des))
+                print 'the destination ivp is the bellow '
+                print des11[0]
+                print 'the ip of destination ivp'
+                receivingdeviceip=parserip(str(des11[0]))
+                print receivingdeviceip
+                print 'the distinantion ge is '
+                print str(des11[1])
+
+
+                #print('this stream desitination rx in fellowing device')
+                destination=accrodingtoiptogetivp(str(rxip))
+                #yangtest.yangshow(destination)
                 try:
-                    coivp,coge=destination[0],destination[1]
+                    #coivp,coge=destination[0],destination[1] 
+                    coivp,coge=des11[0],des11[1]
                 except:
                     coivp,coge='device problem','20000'
-                print('the destination ivp is '+str(coivp))
-                print('this device corresponding ge is ge'+str(coge))
+                try:
+                    print 'i will print des 11'
+                    print des11[0],des11[1]
+                except:
+                    print 'if i am here ,the des has bug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+
+                #print('the destination ivp is '+str(coivp))
+                #print('this device corresponding ge is ge'+str(coge))
+                print coivp,coge
+                
                 print('the corresponding decoder position')
                 print(r.get(str(coivp)+'SMIP_In'+str(int(coge)-1)))
                 #print('')
-                singleivpdevicelink.append({'status':'running','device_list':[{'ip':'ip','id':'ivpid',"board_list":[{'name':info[1],
+                #yangtest.yangshow(r.get(str(coivp)+'SMIP_In'+str(int(coge)-1)))
+                if r.get(str(coivp)+'SMIP_In'+str(int(coge)-1))==None:
+                    print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                    decoder="no"
+                
+                if r.get(str(coivp)+'stream'+str(count)+'settingip')==None:
+                    print "i dislike==================================================>"                     
+                    ip="no"
+                
+                #ip11='no'
+                #yangtest.divingline()
+                yangtest.yangshow('yangming is herer')
+                singleivpdevicelink.append({'status':'running','device_list':[{'ip':deviceip,'id':ivpid,"board_list":[{'name':info[1],
                                                                                                              'type':'encoder',
                                                                                                               'status':'ready',
                                                                                                               'position':info[0]},
                                                                                                              {'name':'smip',
-                                                                                                              'ip':'192.168.1.211',
+                                                                                                              'ip':smiptxip,
                                                                                                               'type':'smiptx',
                                                                                                               'position':'ge'+str(count),
                                                                                                               'status':'ready'}
                                                                                                             ]}
-                                                                       ,{'ip':'ip','id':'id','board_list':[{'ip':r.get('stream'+str(count)+'settingip'),\
+                                                                       ,{'ip':receivingdeviceip,'id':des11[0],'board_list':[{'ip':r.get('stream'+str(count)+'settingip'),\
                                                                                                             'destinationivp':str(coivp),
                                                                                                              'position':'ge'+str(coge),
                                                                                                              'type':'smip',
@@ -198,15 +273,39 @@ def completelink(ivpid='test'):
                                                                          }
 
 ]
-                                                                         
+
 
 
 })
+
+
+
+
+
+
+
+
+
+            print("what is =========================================================>")
             count+=1
-            print yellow(str(singleivpdevicelink))
+            #print yellow(str(singleivpdevicelink))
             r.set(str(ivpid)+'streamgroup',singleivpdevicelink)
     except:
         r.set(str(ivpid)+'streamgroup',[])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -223,8 +322,8 @@ for k in range(1):
     completelink(ivpid='ivp201705232247')
 
 
-
-
+des=ivpdb.accoringiptogetsmiprx('192.168.0.160')
+print des
 print alldevice
 
 #ivp201705232247

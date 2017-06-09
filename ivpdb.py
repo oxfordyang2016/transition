@@ -39,6 +39,26 @@ def parserip(ivpid):
 
 
 
+def accoringiptogetsmiprx(ip):
+    ivpgroup=allivpdevice()
+    for ivpid in ivpgroup:
+        try:
+            for k in range(4):
+                if r.get(str(ivpid)+'smipge'+str(k+1)+'ip')==ip:
+                    if r.get(str(ivpid)+'stream'+str(k+1)+'mode')=='receive':
+                        print 'it  will get receive ge,that is rx===============>'
+                        return [ivpid,str(k+1)]
+        except:
+            pass
+
+
+
+
+
+
+
+
+
 #parser all ivpid in table
 def allivpdevice():
     cursor.execute("select ivpid from infoofivp")
@@ -48,6 +68,35 @@ def allivpdevice():
     for k in  range(thenumberofdevices):
         deviceslist.append(alldevice[str(k)]['ivpid'])
     return deviceslist
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def pinghost(ivpid):
+    hostname=parserip(ivpid)
+    response = os.system("ping -c 1 " + hostname)
+
+    #anthen check the response...
+    if response == 0:
+        print hostname, 'is up!'
+        result='ok'
+    else:
+        print hostname, 'is down!'
+        result='no'
+    return result
+
+
 
 
 

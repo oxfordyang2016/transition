@@ -1,7 +1,5 @@
 from ivpdb import *
 import requests,os
-from colors import *
-import ast
 
 def geterror(ivpid):
     ip=parserip(ivpid)
