@@ -1,0 +1,15 @@
+192.168.0.181
+{'Body': {'slot7_status': 'Ready', 'slot10': '42', 'slot11': '50', 'slot3_status': 'Ready', 'slot8_status': 'Ready', 'slot11_status': 'Ready', 'slot9_status': 'Ready', 'slot6_status': 'Ready', 'slot10_status': 'Ready', 'slot9': '44', 'slot8': '43', 'slot7': '18', 'slot4_status': 'Ready', 'slot3': '10', 'slot5': '13', 'slot4': '21', 'slot5_status': 'Ready', 'slot6': '28'}, 'Head': {'ErrorCode': '0', 'Message': 'Success'}}
+['slot3'] ['slot4']
+slot4
+[33minfo1------>{
+	"Head":	{
+		"ErrorCode":	"0",
+		"Message":	"Success"
+	},
+	"Body":	{
+		"status":	4,
+		"status_str":	"Async"
+	}
+}[0m
+[31m{'Body': {'status': 4, 'status_str': 'Async'}, 'Head': {'ErrorCode': '0', 'Message': 'Success'}}[0m

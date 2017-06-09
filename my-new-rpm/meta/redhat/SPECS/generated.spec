@@ -1,0 +1,1 @@
+/root/ivps/my-new-rpm/meta/../generated.spec

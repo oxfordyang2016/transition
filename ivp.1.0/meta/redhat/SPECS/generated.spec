@@ -1,0 +1,1 @@
+/root/ivps/ivp.1.0/meta/../generated.spec

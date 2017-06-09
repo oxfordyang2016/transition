@@ -1,0 +1,50 @@
+#!/bin/bash
+echo "=============================Enter installazition================="
+
+//install database
+yum -y install mariadb-server mariadb
+
+//install  redis-server
+wget http://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+cd redis-stable
+make
+
+//install python-pip
+sudo yum install python-pip
+
+//install redis client moudle
+sudo pip install redis
+
+
+//start ivp service
+//systemctl start mariadb
+//redis-server
+//python encoder.py
+//python decoder.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
