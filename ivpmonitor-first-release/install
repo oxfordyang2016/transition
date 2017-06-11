@@ -31,11 +31,12 @@ sudo pip install redis
 
 
 //start ivp service
-//systemctl start mariadb
-//redis-server
-//python encoder.py
-//python decoder.py
-
+systemctl start mariadb
+redis-server
+python encoder.py
+python decoder.py
+python smip.py
+python ivp.py
 
 
 

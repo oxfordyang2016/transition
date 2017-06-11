@@ -1,4 +1,3 @@
-
 from ivpdb import *
 app = Flask(__name__)
 
@@ -14,7 +13,23 @@ apiversion='1.0'
 
 @app.route('/')
 def hello_world():
-    return 'hello world'
+    #return 'hello world'
+    return render_template("index.html")
+
+@app.route('/streams')
+def hello_world1():
+    #return 'hello world'
+    return render_template("index.html")
+
+
+
+@app.route('/devices')
+def hello_world2():
+    #return 'hello world'
+    return render_template("index.html")
+
+
+
 
 @app.route('/api/v')
 def version():

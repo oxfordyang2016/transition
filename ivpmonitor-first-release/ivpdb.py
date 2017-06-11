@@ -1,7 +1,7 @@
 from  colors  import *
 from monitor import *
 from time import strftime 
-from flask import Flask,request
+from flask import Flask,request,render_template
 import MySQLdb,redis,ast,requests,yangtest,json
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 db=MySQLdb.connect(host='localhost', user='root', passwd='123456',db="ivp")
